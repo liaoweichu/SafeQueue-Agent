@@ -1,6 +1,6 @@
 # G2 Profiling Input Contract (v3)
 
-状态：`policy_and_materializer_signed; v3 cloud profile pending`
+状态：`policy_and_materializer_signed; v3 cloud profile audited; G2_frozen`
 更新日期：2026-07-30
 
 ## 模型可见记录
@@ -59,4 +59,4 @@ AgentDojo `target_functions` 只能用于离线 hard-capability 审计，绝不�
 
 ## 云端前置条件
 
-云端只能在 `scripts/stratify_and_audit_g2_prompts.py` 成功生成 v3 selection 后加载模型。回传 `preflight.v3.json`、smoke JSON、两档 raw/summary 和 selection 后，必须运行 `scripts/audit_g2_profiling_artifacts.py`。在它通过前，G2 保持 `G2_conditional`。
+云端已在 `scripts/stratify_and_audit_g2_prompts.py` 生成 v3 selection 后完成 profiling，并回传 `preflight.v3.json`、smoke JSON、两档 raw/summary 与 selection。独立审计已通过；任何后续重跑仍必须复用同一顺序并重新审计。

@@ -10,4 +10,4 @@ The only candidate freeze artifacts are the separately named v3 files produced b
 - `profiling-strong.v3.jsonl` and `profiling-strong.v3.summary.json`
 - `g2-v3-audit.json`
 
-Until `g2-v3-audit.json` reports `passed: true`, the project gate is `G2_conditional`.
+`g2-v3-audit.json` 已报告 `passed: true`，并确认 `derived_maximum_wait_ms=5000`；因此项目 Gate 为 `G2_frozen`。这些是服务时间证据，不是五方法主重放或论文结果。

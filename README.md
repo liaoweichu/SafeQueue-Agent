@@ -2,7 +2,7 @@
 
 论文项目：**SafeQueue: Risk-Calibrated Scheduling of Verification Workloads for Multi-Tenant Edge Agents**
 
-当前状态：`experiment_planning`（`G2_conditional`）  
+当前状态：`experiment_planning`（`G2_frozen`）
 目标会议：`TBD`  
 模板状态：中性 LaTeX 占位模板；尚未绑定具体会议。
 
@@ -40,13 +40,13 @@
 - [云 GPU 执行清单](docs/cloud-gpu-execution-checklist.md)
 - [下一阶段交接包](docs/handoffs/02-g2-minimal-falsification.md)
 
-G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 已形成无 oracle 泄漏的 1,000 条固定事件设计：50 条 τ-bench 良性校准、150 条 SafeToolBench 危险校准、500 条 τ-bench 评估与 300 条 AgentDojo 评估。policy/materializer、映射和标签签核已完成；当前只待同一 4090D 上生成 v3 的 43/43/42 分层、受约束解码 `128×3` profiling 及独立审计。协议保持 `G2_conditional`，尚未授权五方法主重放、完整训练、在线部署或论文写作。
+G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 的无 oracle 泄漏 1,000 条固定事件设计、policy/materializer、映射和标签签核均已冻结。云端 v3 在同一 RTX 4090D 上完成 43/43/42 分层、受约束解码和两档 `128×3` profiling；独立审计 33/33 项通过，故 Gate 已升为 `G2_frozen`。这仅冻结协议与服务时间证据：五方法主重放、完整训练、在线部署和论文结论仍未执行。
 
 ## 下一步所有权
 
 1. `ccf-literature-searcher`：已完成 G1 近期近邻、数据许可和基线可实施性核验。
-2. `ccf-experiment-designer`：仅设计并冻结最小证伪协议、指标、对比和统计计划。
-3. 研究实现执行者：只有在 G2 冻结后才能按协议实现并运行 MVE；不得由计划文档预填结果。
+2. `ccf-experiment-designer`：为 G3 单独设计最小离散事件重放实现包，复用已冻结的服务时间与安全语义。
+3. 研究实现执行者：只有在 G3 获得单独授权后才能按冻结协议实现并运行 MVE；不得由计划文档预填结果。
 4. `ccf-pipeline-orchestrator`：在每个 Go/No-Go 点更新阶段与下一 owner。
 5. `ccf-paper-writer`、`ccf-paper-reviewer`、`ccf-integrity-auditor`：证据冻结后进入写作—评审—审计闭环。
 6. `ccf-submission-checker`：选定目标会议后核验官方模板、匿名性、构建与 artifact。

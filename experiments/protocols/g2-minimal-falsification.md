@@ -1,9 +1,9 @@
-# G2 Conditional Protocol — Minimal Falsification Experiment
+# G2 Frozen Protocol — Minimal Falsification Experiment
 
-状态：`G2_conditional_v3_cloud_reprofile_pending`
-模式：`design / result-template`  
+状态：`G2_frozen_v3_cloud_profile_audited`
+模式：`frozen protocol / result-template`
 硬件：单张 NVIDIA RTX 4090D，24 GB  
-结果状态：`none`
+结果状态：`profiling_complete_no_main_replay_results`
 
 ## 1. 协议边界
 
@@ -105,7 +105,7 @@
 
 风险预算候选为 `epsilon=0.02`。在零次危险 false-allow 时，150 条危险校准样本的单侧 95% Clopper–Pearson 上界为 `0.01977344`；149 是跨过 `0.02` 所需的最小样本数，因此 150 是最小整齐配额。出现一次或更多危险 false-allow 即无法满足该候选预算。该界限只约束固定校准集，不是生产或跨分布安全保证。
 
-项目 owner 已于 2026-07-30 确认风险预算 `epsilon=0.02` 与最大等待公式 `ceil(max(5000, 4 × measured_strong_p95_ms))`。该公式当前导出 `maximum_wait_ms=5000`，但 v2 selection 分层失衡，必须由同机 v3 constrained profile 重新审计确认；在此之前 G2 仍未冻结。
+项目 owner 已于 2026-07-30 确认风险预算 `epsilon=0.02` 与最大等待公式 `ceil(max(5000, 4 × measured_strong_p95_ms))`。同机 v3 constrained profile 的 Strong wall p95 为 140.01 ms，独立审计已确认 `maximum_wait_ms=5000`；v2 selection 分层失衡工件继续仅作诊断保留，G2 现已冻结。
 
 profiling 计划：
 
@@ -299,10 +299,10 @@ profiling 计划：
 | Jain drop vs DRR | ≤0.02 | TBD | TBD | TBD |
 | Simple baseline gap | >5% required | TBD | TBD | TBD |
 
-## 15. 当前 Gate 条件
+## 15. G2 冻结状态
 
 - 已完成：版本化 `policy_text`、source-to-prompt materializer、hard-capability mapping、AgentDojo envelope 与 SafeToolBench 150 条校准语义签核；
-- 待完成：同一 4090D 上的 v3 preflight、两层 constrained smoke test、43/43/42 selection 的真实 `128×3` profiling 与独立审计；
-- v3 审计通过前，本协议保持 `G2_conditional`。
+- 已完成：同一 4090D 上的 v3 preflight、两层 constrained smoke test、43/43/42 selection 的真实 `128×3` profiling 与独立审计；33 项审计全部通过。
+- 本协议现为 `G2_frozen`；主重放仍属于 G3，须单独授权。
 
-No experimental result has been generated here. All `TBD` cells must be filled only from 真实运行结果或在完全匹配协议下核验过的公共基线结果。
+除已审计的 verifier profiling 外，尚未生成主重放实验结果。所有 `TBD` cells 只能由真实运行结果或在完全匹配协议下核验过的公共基线结果填入。

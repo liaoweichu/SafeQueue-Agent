@@ -1,7 +1,7 @@
 # SafeQueue G2 v3 云端重跑清单
 
-状态：`reprofile_required_v3`
-授权范围：仅 v3 preflight、受约束解码 smoke test、两个 tier 的真实 `128 × 3` latency profiling 与工件审计。**不**授权五方法主重放、训练、线上部署、结果表或论文结论。
+状态：`completed_v3_audit_passed_2026-07-30`
+执行范围已完成：v3 preflight、受约束解码 smoke test、两个 tier 的真实 `128 × 3` latency profiling 与工件审计。该完成不授权五方法主重放、训练、线上部署、结果表或论文结论。
 
 ## 0. 不变条件
 
@@ -94,4 +94,4 @@ artifact/cloud-gpu/profiling-strong.v3.summary.json
 artifact/cloud-gpu/g2-v3-audit.json
 ```
 
-本地完整性审计通过前，`ccfa.yaml` 必须保持 `G2_conditional`。
+回传的八个 v3 工件已通过独立审计：`passed: true`、`derived_maximum_wait_ms: 5000`。因此 `ccfa.yaml` 已升为 `G2_frozen`；任何重新执行本清单的变体都须使用新的版本化文件名并再次过 Gate。

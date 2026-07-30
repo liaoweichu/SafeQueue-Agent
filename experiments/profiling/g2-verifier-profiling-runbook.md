@@ -1,7 +1,7 @@
 # G2 Verifier Profiling Runbook (v3)
 
-状态：`cloud_reprofile_required_v3`
-作用：冻结 v3 的输入、解码和测量语义；本文件不预填任何新的 latency 结果。
+状态：`cloud_reprofile_complete_v3_audit_passed`
+作用：冻结 v3 的输入、解码和测量语义，并索引已审计的 latency 工件；本文件不预填主重放结果。
 
 ## 冻结候选
 
@@ -55,4 +55,6 @@
 - summary 的 p50/p95/p99 与 raw JSONL 可重算一致；
 - `scripts/audit_g2_profiling_artifacts.py` 必须通过。
 
-任一项失败时 Gate 维持 `G2_conditional`，不得把旧 v2 服务时间或临时 prompt 作为替代。
+已完成结果：同一 RTX 4090D、代码 `df66c25` 上 Light/Strong 各 384 条有效测量，零 OOM/runtime/constraint error；wall p95 分别为 37.68 / 140.01 ms。详见 `artifact/cloud-gpu/g2-v3-audit.json`。
+
+任一后续复跑失败时不得以旧 v2 服务时间或临时 prompt 作为替代；应重新回到编排器审核。

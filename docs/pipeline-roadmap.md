@@ -10,13 +10,13 @@
 | --- | --- |
 | 项目目标 | 验证 SafeQueue 是否能在硬安全边界下，把有限验证算力作为多租户排队资源进行调度，并改善尾延迟与成本而不牺牲危险动作控制和租户公平 |
 | 当前阶段 | `experiment_planning` |
-| 当前门禁 | `G2_conditional` |
+| 当前门禁 | `G2_frozen` |
 | 当前受众 | 研究团队内部；尚未绑定投稿受众 |
 | 目标 venue | `TBD`；首轮系统证据后在 Systems / Security / AI Systems 家族中收敛 |
 | 时间基线 | 采用综合分析中的相对 14 周研究节奏；尚无固定投稿截止日期 |
 | 计算约束 | 单张 NVIDIA RTX 4090D，24 GB 显存；优先 trace 重放、缓存强验证器输出和轻量模型 |
 | 隐私边界 | C1 方向、内部报告和未来未公开结果按私有材料处理；检索只使用公开安全查询，不粘贴私有原文或本地路径 |
-| 当前决定 | G1 已条件通过；只允许完成 G2 v3 的同机 constrained profiling 与审计。G2 冻结前不启动主重放、训练或论文写作 |
+| 当前决定 | G1 已条件通过；G2 v3 的同机 constrained profiling 与审计已通过并冻结。G3 主重放、训练或论文写作仍需单独 Gate |
 
 ## 2. 当前工件与缺口
 
@@ -40,11 +40,10 @@
 
 ### 当前缺口
 
-1. `epsilon=0.02`、policy/materializer、hard registry、SafeToolBench 150/150 语义 ledger 与最大等待公式均已签核；v3 审计须重新确认公式导出的 `maximum_wait_ms=5000`。
-2. v2 profiling selection 的 123/128 单一 stratum 失衡已作废；v3 必须以完整 chat prompt token 生成 43/43/42 的新 selection。
-3. Qwen3-1.7B / Qwen3-8B 必须在同一 4090D 上以单 token logits mask 重跑 smoke 与真实 `128×3` profiling；不得复用 v2 服务时间。
-4. 回传 v3 raw JSONL、summary、preflight、smoke 和 selection 后，独立审计器必须通过。
-6. 无真实实验结果；不得进入五方法主重放、实现结论、完整训练、论文写作或特定会议模板迁移。
+1. `epsilon=0.02`、policy/materializer、hard registry、SafeToolBench 150/150 语义 ledger 与 `maximum_wait_ms=5000` 均已签核；v3 审计已确认公式结果。
+2. v2 profiling selection 的 123/128 单一 stratum 失衡已作废；v3 已以完整 chat prompt token 生成 43/43/42 的 128 条 selection，并完成两档 `128×3` profiling。
+3. G3 尚无真实离散事件重放结果；不得把 profiling 结果写成 SafeQueue 的延迟、安全或公平收益结论。
+4. G3 消费序列化 risk score 时须裁剪到 [0, 1]，以消除已审计的浮点级（最大 1.12e-7）概率和误差。
 
 ## 3. 门禁链
 
@@ -93,5 +92,5 @@ W14+    G6–G8 选会、写作、评审、完整性与投稿检查
 
 下一 owner：`ccf-experiment-designer`  
 交接工件：`docs/g2-freeze-readiness.md`  
-当前状态：`G2_conditional`，v3 本地协议已冻结但云端重跑未完成。
-交接条件：按 `docs/cloud-gpu-execution-checklist.md` 生成 43/43/42 selection、完成同机 constrained smoke/profile，并使 `scripts/audit_g2_profiling_artifacts.py` 通过后，才能申请 G2 冻结；冻结前不启动五方法主重放、训练或论文写作。
+当前状态：`G2_frozen`，v3 云端重跑已完成，独立审计通过。
+交接条件：G3 需单独实现离散事件重放，并复用固定 selection、服务时间样本、硬集合、风险阈值和失败关闭语义；在新的 Go/No-Go 前不启动训练、线上部署或论文写作。

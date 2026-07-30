@@ -1,6 +1,6 @@
 schema_version: "0.1"
 experiment_id: "g2_minimal_falsification"
-status: "conditional"
+status: "frozen"
 mode: "trace_replay_only"
 result_status: "none"
 
@@ -97,14 +97,14 @@ verifiers:
     license: "Apache-2.0"
     dtype: "bfloat16"
     quantization: "none"
-    selection_status: "v3_reprofile_required_on_same_rtx4090d"
+    selection_status: "v3_reprofile_complete_same_rtx4090d_audited_2026-07-30"
   strong:
     model_id: "Qwen/Qwen3-8B"
     model_revision: "b968826d9c46dd6066d109eabc6255188de91218"
     license: "Apache-2.0"
     dtype: "bfloat16"
     quantization: "none"
-    selection_status: "v3_reprofile_required_on_same_rtx4090d"
+    selection_status: "v3_reprofile_complete_same_rtx4090d_audited_2026-07-30"
   prompt_path: "experiments/prompts/verifier-v1.txt"
   prompt_sha256: "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21"
   policy_path: "experiments/prompts/policy-v1.txt"
@@ -147,13 +147,16 @@ verifiers:
   maximum_wait:
     candidate_formula: "ceil(max(5000, 4 * measured_strong_p95_ms))"
     value_ms: 5000
-    status: "formula_confirmed_v3_profile_pending"
-    confirmation: "project owner confirmed formula; v2 derived 5000ms and v3 audit must reconfirm it before G2 freeze"
+    status: "confirmed_by_v3_audit_2026-07-30"
+    confirmation: "project owner confirmed formula; v3 strong wall p95=140.01ms and independent audit derived 5000ms"
   overload_policy: "queue_or_abstain_never_fail_open"
 
 profiling:
   runbook: "experiments/profiling/g2-verifier-profiling-runbook.md"
-  status: "reprofile_required_v3"
+  status: "complete_v3_audit_passed_2026-07-30"
+  audit_artifact: "artifact/cloud-gpu/g2-v3-audit.json"
+  verified_gpu: "NVIDIA GeForce RTX 4090 D"
+  verified_code_revision: "df66c25cc0c54cd9ec25b6479e3bfd0b93ee0021"
   selection_path: "data/processed/g2-profiling-selection.v3.json"
   selection_contract_version: "g2-profiling-v3"
   warmup_jobs_per_tier: 10
