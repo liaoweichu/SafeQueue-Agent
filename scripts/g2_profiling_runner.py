@@ -22,11 +22,13 @@ import hashlib
 import json
 import os
 import random
+import subprocess
 import sys
 import time
 from pathlib import Path
 
 import torch
+import transformers
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 # ── Model definitions ──────────────────────────────────────────────────
@@ -92,8 +94,14 @@ def run_profiling_tier(
     records = selection["records"]
     total_inputs = len(records)
 
-    print(f"Loaded {total_inputs} profiling inputs "
-          f"(selection SHA-256: {selection['selection_sha256'][:16]}...)")
+    # Filter: only profile eligible records
+    eligible_records = [r for r in records if r.get("eligible_for_profiling", True)]
+    skipped = len(records) - len(eligible_records)
+    if skipped:
+        print(f"Skipping {skipped} ineligible records (no call-time action)")
+    records = eligible_records
+    total_inputs = len(records)
+    print(f"Profiling {total_inputs} eligible inputs")
 
     # ── Load policy and template ─────────────────────────────────────
     policy = Path("experiments/prompts/policy-v1.txt").read_text(encoding="utf-8")
@@ -102,13 +110,31 @@ def run_profiling_tier(
     template_sha256 = hashlib.sha256(template.encode()).hexdigest().upper()
 
     # ── GPU provenance ───────────────────────────────────────────────
+    driver_version = ""
+    try:
+        result = subprocess.run(
+            ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
+            capture_output=True, text=True, check=True
+        )
+        driver_version = result.stdout.strip().split("\n")[0].strip()
+    except Exception:
+        pass
+
     gpu_info = {
         "name": torch.cuda.get_device_name(0),
         "memory_total_mb": torch.cuda.get_device_properties(0).total_memory // (1024 * 1024),
         "cuda_version": torch.version.cuda,
         "torch_version": torch.__version__,
-        "driver_version": "",  # filled via nvidia-smi if available
+        "transformers_version": transformers.__version__,
+        "driver_version": driver_version,
+        "tokenizer_revision": spec["revision"],
+        "selection_sha256": selection.get("selection_sha256", ""),
+        "policy_sha256": policy_sha256,
+        "template_sha256": template_sha256,
     }
+    print(f"Provenance: GPU={gpu_info['name']}, Driver={driver_version}, "
+          f"CUDA={gpu_info['cuda_version']}, PyTorch={gpu_info['torch_version']}, "
+          f"Transformers={gpu_info['transformers_version']}")
 
     # ── Load model ──────────────────────────────────────────────────
     print(f"\nLoading {spec['label']} (revision={spec['revision']})...")
@@ -264,17 +290,23 @@ def run_profiling_tier(
             wall_ms = (time.time() - wall_t0) * 1000
             cuda_ms = start_event.elapsed_time(end_event)
 
-            # Decode label
+            # Decode label — STRICT: only 0, 1, or 2 accepted
             new_tokens = outputs[0][input_tokens:]
             label_text = tokenizer.decode(
                 new_tokens, skip_special_tokens=True
             ).strip()
             output_tokens = int(new_tokens.shape[0])
-            label = label_text[0] if label_text else ""
 
-            valid = label in ("0", "1", "2")
+            # Strict label enforcement: must be exactly 0, 1, or 2
+            valid = label_text in ("0", "1", "2")
             if not valid:
                 parse_failures += 1
+                label = None
+            else:
+                label = label_text
+
+            # GPU interference check: wall vs cuda diff > 10% indicates background GPU activity
+            gpu_interference = (abs(wall_ms - cuda_ms) / max(wall_ms, 0.001)) > 0.10
 
             measurement = {
                 "event_id": rec["event_id"],
@@ -283,10 +315,11 @@ def run_profiling_tier(
                 "input_tokens": input_tokens,
                 "output_tokens": output_tokens,
                 "raw_output": label_text[:20],
-                "label": label if valid else None,
+                "label": label,
                 "wall_ms": round(wall_ms, 4),
                 "cuda_ms": round(cuda_ms, 4),
                 "peak_vram_mb": round(get_peak_vram_mb(), 2),
+                "gpu_interference": gpu_interference,
             }
             all_measurements.append(measurement)
 
@@ -344,6 +377,10 @@ def run_profiling_tier(
             "oom_count": oom_count,
             "parse_failures": parse_failures,
             "completion_rate": round(n_ok / n_expected, 4) if n_expected else 0,
+            "gpu_interference_count": sum(1 for m in ok_measurements if m.get("gpu_interference")),
+            "gpu_interference_rate": round(
+                sum(1 for m in ok_measurements if m.get("gpu_interference")) / max(n_ok, 1), 4
+            ),
         },
         "latency": {
             "wall_p50_ms": round(percentile(wall_times, 50), 2),
@@ -386,6 +423,9 @@ def run_profiling_tier(
           f"p99={summary['latency']['cuda_p99_ms']}ms")
     print(f"  OK: {n_ok}/{n_expected}  OOM: {oom_count}  "
           f"Parse failures: {parse_failures}")
+    gpu_interference = summary["profiling"]["gpu_interference_count"]
+    print(f"  GPU interference: {gpu_interference}/{n_ok} "
+          f"({summary['profiling']['gpu_interference_rate']*100:.1f}%)")
 
     print(f"  Valid: {'PASS' if passed else 'FAIL'} "
           f"(requires 100% completion, 0 OOM, 0 parse failures)")

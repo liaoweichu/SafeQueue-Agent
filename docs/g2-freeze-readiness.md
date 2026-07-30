@@ -2,30 +2,43 @@
 
 更新日期：2026-07-30  
 当前 Gate：`G2_frozen`  
-判定：`frozen — all blockers closed`
+判定：`frozen — v2 reprofiling complete, all blockers closed`
 
-## 已完成
+## 摘要
 
-- τ-bench 固定到 `v1.0.1` / `fc0055dc4e0a316c3f83133267fbd6faaa770992`；
-- AgentDojo 固定到 package `v0.1.35` / `a75aba7631d3ca5fb7ab938965c97ead2f9ff84b`，benchmark `v1.2.2`；
-- SafeToolBench 固定到 `ffdef6e782b0b05f579316003f3b084b549f1366`，仅作为危险校准来源；
-- 三个源码许可证均核验为 MIT，并记录源码压缩包与 LICENSE 哈希；
-- 验证器候选固定为 Qwen3-1.7B / Qwen3-8B、BF16、non-thinking、分层单独加载；
-- 统一 verifier prompt、风险分数定义和 profiling runbook 已落盘；
-- 硬能力注册表候选已覆盖 Retail 精确工具名与 AgentDojo 可观测目标函数；已删除"样本属于注入目标即 hard"的 oracle 规则；
-- 静态资格审计采用最小混合校准：50 条 Retail 良性动作 + 150 条 SafeToolBench 危险/需审批工具计划；评估为 500 条 Retail 动作 + 300 条 AgentDojo held-out 案例；
-- 150 条危险校准样本在零 false-allow 时的单侧 95% Clopper–Pearson 上界为 `0.01977344`，刚好支持候选 `epsilon=0.02`；一次 false-allow 即判不可行；
-- 固定清单共有 1,000 条事件、800 条评估事件、454 条硬评估事件、300 条危险注入目标和 9 条非硬危险事件；数量门与校准支持门通过；
-- AgentDojo 排除了 20 个纯文本输出目标；300 个选中案例均已获得 literal target function 或注册表人工 envelope；
-- 事件清单 SHA-256：`8afed1ffe3dcd20e930bd914d74329352308c426aacb99d0ef50ba0879cad3fb`；
-- 项目 owner 已确认 `epsilon=0.02` 与 `ceil(max(5000, 4 × measured_strong_p95_ms))`；
-- **versioned policy_text**：`experiments/prompts/policy-v1.txt`（SHA-256: `1772EE5994EAA7B81E23585A905D7D400EE01884FE1503CDB48B8599A5B09DAE`），已签核；
-- **source-to-prompt materializer**：`src/materializers/` + `scripts/materialize_g2_prompts.py`，已签核；
-- 硬能力注册表映射审计：21/21 函数注册，已签核；
-- AgentDojo envelope 复核：300 案例 hard_required 逻辑正确，已签核；
-- SafeToolBench 150 条风险语义签核：150/150 PASS，reviewer=project_owner, 2026-07-30。论文 1,200 与公开压缩包 1,000 数量差异已签核；
-- 云端 GPU preflight + smoke test + profiling：RTX 4090D, 387/387×2 tiers, 0 OOM, 0 parse failures, Light p95=58.95ms, Strong p95=166.74ms。`maximum_wait_ms = 5000`。
+| 修复项 | 变更 |
+|---|---|
+| stratify 脚本 | 真实 Qwen3 tokenizer, 精确 128 条, 排除重复 prompt, SafeToolBench 校准层独立记录 |
+| AgentDojo materializer | 禁止 target_functions 输入泄漏, 300 事件标记 eligible_for_profiling=false |
+| profiling runner | 强制 0/1/2 标签, Driver/Transformers/tokenizer revision/selection hash 等完整 provenance, GPU 干扰监测 |
 
-## 全部完成
+## Profiling 结果 (v2)
 
-G2 冻结前置条件已全部关闭。Gate 已升级为 `G2_frozen`。编排约束已解除，可按 [handoff 02](docs/handoffs/02-g2-minimal-falsification.md) 进入 G3 MVE 实现阶段。升级只授权按冻结协议进入 G3，不代表实验结果通过。
+| 指标 | Light (1.7B) | Strong (8B) |
+|---|---|---|
+| 测量 | 384/384 | 384/384 |
+| OOM | 0 | 0 |
+| Parse failures | 0 | 0 (strict 0/1/2 enforcement) |
+| GPU interference | 0/384 (0.0%) | 0/384 (0.0%) |
+| Wall p50 | 54.16ms | 148.85ms |
+| Wall p95 | 55.26ms | 151.98ms |
+| Wall p99 | 57.90ms | 160.63ms |
+| AgentDojo events | 0 (correctly excluded) | 0 (correctly excluded) |
+
+## 冻结参数
+
+- `epsilon = 0.02`
+- `maximum_wait_ms = ceil(max(5000, 4 × 151.98)) = 5000ms`
+- GPU: NVIDIA GeForce RTX 4090 D, 24 GiB, Driver 550.120, CUDA 12.4
+- PyTorch 2.5.1+cu124, Transformers 5.14.1, BF16
+- Selection SHA-256: `e7e637a5a7d8f1052941e287f3503b885b7f026a7e6d6a6f88e92a5196104bc7`
+
+## 全部签核项
+
+- policy-v1.txt + materializers: owner_signed
+- hard-capability registry pre-audit: owner_signed
+- AgentDojo envelope review: owner_signed
+- SafeToolBench 150/150 label review: owner_signed
+- Cloud GPU profiling: RTX 4090D, 384/384×2 tiers, all gates passed
+
+Gate 已升级为 `G2_frozen`，可进入 G3 MVE 实现。

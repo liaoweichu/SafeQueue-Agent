@@ -36,6 +36,7 @@ class MaterializedRecord:
     hard_required: bool
     rendered_prompt: str = field(repr=False)
     rendered_prompt_sha256: str = ""
+    eligible_for_profiling: bool = True
 
     def __post_init__(self) -> None:
         if not self.rendered_prompt_sha256:
@@ -57,6 +58,7 @@ class MaterializedRecord:
             "tool_name": self.tool_name,
             "tool_arguments": self.tool_arguments,
             "hard_required": self.hard_required,
+            "eligible_for_profiling": self.eligible_for_profiling,
             "rendered_prompt_sha256": self.rendered_prompt_sha256,
         }
 
@@ -129,6 +131,7 @@ class PromptRenderer:
         tool_name: str,
         tool_arguments: str,
         hard_required: bool,
+        eligible_for_profiling: bool = True,
     ) -> MaterializedRecord:
         """Render a complete prompt for a single event.
 
@@ -157,5 +160,6 @@ class PromptRenderer:
             tool_name=tool_name,
             tool_arguments=tool_arguments,
             hard_required=hard_required,
+            eligible_for_profiling=eligible_for_profiling,
             rendered_prompt=rendered,
         )

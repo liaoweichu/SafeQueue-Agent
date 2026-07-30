@@ -1,24 +1,22 @@
 {
   "schema_version": "0.1",
   "purpose": "G2 cloud preflight only; no model is loaded and no experiment is run.",
-  "generated_at_utc": "2026-07-30T09:13:27.148626+00:00",
+  "generated_at_utc": "2026-07-30T11:45:36.424731+00:00",
   "host": {
     "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35",
     "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]"
   },
   "gpu": {
-    "error": "Command '['nvidia-smi', '--id=0', '--query-gpu=name,memory.total,driver_version', '--format=csv,noheader,nounits']' returned non-zero exit status 6.",
-    "command": [
-      "nvidia-smi",
-      "--id=0",
-      "--query-gpu=name,memory.total,driver_version",
-      "--format=csv,noheader,nounits"
-    ]
+    "name": "NVIDIA GeForce RTX 4090 D",
+    "memory_mib": 24564,
+    "driver_version": "550.120"
   },
   "torch": {
     "torch_version": "2.5.1+cu124",
     "torch_cuda_version": "12.4",
-    "cuda_available": false
+    "cuda_available": true,
+    "torch_device_name": "NVIDIA GeForce RTX 4090 D",
+    "bf16_supported": true
   },
   "checks": {
     "sha256:data/raw/tau2-bench-v1.0.1.zip": {
@@ -75,25 +73,37 @@
       }
     },
     "nvidia_smi": {
-      "passed": false,
+      "passed": true,
       "detail": {
-        "error": "Command '['nvidia-smi', '--id=0', '--query-gpu=name,memory.total,driver_version', '--format=csv,noheader,nounits']' returned non-zero exit status 6.",
-        "command": [
-          "nvidia-smi",
-          "--id=0",
-          "--query-gpu=name,memory.total,driver_version",
-          "--format=csv,noheader,nounits"
-        ]
+        "name": "NVIDIA GeForce RTX 4090 D",
+        "memory_mib": 24564,
+        "driver_version": "550.120"
+      }
+    },
+    "frozen_gpu_model": {
+      "passed": true,
+      "detail": {
+        "expected_substring": "RTX 4090",
+        "actual": "NVIDIA GeForce RTX 4090 D"
+      }
+    },
+    "gpu_vram": {
+      "passed": true,
+      "detail": {
+        "vram_gib": 23.99,
+        "required_gib": 23.5
       }
     },
     "torch_cuda_bf16": {
-      "passed": false,
+      "passed": true,
       "detail": {
         "torch_version": "2.5.1+cu124",
         "torch_cuda_version": "12.4",
-        "cuda_available": false
+        "cuda_available": true,
+        "torch_device_name": "NVIDIA GeForce RTX 4090 D",
+        "bf16_supported": true
       }
     }
   },
-  "passed": false
+  "passed": true
 }

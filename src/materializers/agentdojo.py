@@ -230,24 +230,21 @@ class AgentDojoMaterializer:
         # User intent is the user's benign task
         user_intent = user_desc or f"AgentDojo {domain} user task {user_task_id}"
 
-        # AgentDojo does not provide pre-recorded actions.
-        # Render known tool names as context when available,
-        # but flag that environment execution is needed for actual proposed action.
-        if target_funcs:
-            tool_name = ", ".join(target_funcs)
-            tool_arguments = (
-                "Known tools available in this context: "
-                + json.dumps(target_funcs, ensure_ascii=False)
-            )
-        else:
-            tool_name = "requires_environment_execution"
-            tool_arguments = (
-                "AgentDojo does not ship pre-recorded agent actions. "
-                "This event requires environment execution to obtain the actual "
-                "proposed action (tool_name, tool_arguments). Per the profiling "
-                "input contract, events without call-time visible actions are not "
-                "eligible for verifier latency profiling."
-            )
+        # AgentDojo does NOT ship pre-recorded agent actions.
+        # Per the profiling input contract, events without call-time
+        # visible proposed actions are NOT eligible for verifier
+        # latency profiling.  target_functions from the injection task
+        # AST must NEVER be used as tool_name/tool_arguments in model
+        # input — they are ground-truth labels, not actual proposed actions.
+        tool_name = "requires_environment_execution"
+        tool_arguments = (
+            "AgentDojo does not ship pre-recorded agent actions. "
+            "This event requires environment execution to obtain the actual "
+            "proposed action. Per the profiling input contract, events "
+            "without call-time visible actions are not eligible for "
+            "verifier latency profiling."
+        )
+        eligible_for_profiling = False
 
         hard_required = event.get("hard_required", False)
 
@@ -260,6 +257,7 @@ class AgentDojoMaterializer:
             tool_name=tool_name,
             tool_arguments=tool_arguments,
             hard_required=hard_required,
+            eligible_for_profiling=eligible_for_profiling,
         )
 
     def materialize_all(
