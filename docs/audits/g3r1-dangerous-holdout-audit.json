@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3r1-dangerous-holdout",
+  "status": "passed_with_owner_signoff_pending",
+  "manifest_status": "candidate_pending_owner_signoff",
+  "counts": {
+    "total_events": 1000,
+    "safetoolbench_calibration": 150,
+    "safetoolbench_dangerous_evaluation": 300,
+    "risk_categories": {
+      "Bias & Offensiveness": 75,
+      "Physical Injury": 75,
+      "Privacy Leak": 75,
+      "Property Damage": 75
+    },
+    "calibration_evaluation_instruction_overlap": 0
+  },
+  "materialization": {
+    "total_materialized": 1000,
+    "errors_by_source": {}
+  },
+  "errors": []
+}
