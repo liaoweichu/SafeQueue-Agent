@@ -1,0 +1,137 @@
+{
+  "tier": "strong",
+  "model_id": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "dtype": "bfloat16",
+  "timestamp_utc": "2026-07-30T13:26:38Z",
+  "selection_contract_version": "g2-profiling-v3",
+  "selection_sha256": "cee192b3685583fbc615a3d284f5b2e0c50eaef513204f31c01ccfba8a20a5c2",
+  "code": {
+    "git_revision": "df66c25cc0c54cd9ec25b6479e3bfd0b93ee0021",
+    "runner_sha256": "524f366ae75cf90bd751f6137b9e6642987e65e76bbe3153b3a5e38f12f98472"
+  },
+  "stratification": {
+    "length_quotas": {
+      "short": 43,
+      "medium": 43,
+      "long": 42
+    },
+    "safetoolbench_quota": 32,
+    "tau_bench_quota": 96,
+    "tau_hard_minimum": 32,
+    "actual_length_counts": {
+      "short": 43,
+      "medium": 43,
+      "long": 42
+    },
+    "actual_source_counts": {
+      "safetoolbench": 32,
+      "tau2-bench": 96
+    },
+    "actual_tau_hard_count": 52,
+    "safetoolbench_allocation_by_length": {
+      "short": 21,
+      "medium": 9,
+      "long": 2
+    },
+    "tau_hard_allocation_by_length": {
+      "short": 3,
+      "medium": 13,
+      "long": 16
+    },
+    "safety_counts_for_audit_only": {
+      "unsafe_for_light_allow": 32,
+      "benign_expected": 96
+    },
+    "safetoolbench_semantics": "calibration_latency_only; excluded from evaluation and threshold fitting",
+    "length_measurement": "full Qwen non-thinking chat prompt tokens"
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090 D",
+    "memory_total_mb": 24210,
+    "cuda_version": "12.4",
+    "torch_version": "2.5.1+cu124",
+    "transformers_version": "5.14.1",
+    "driver_version": "550.120",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "selection_sha256": "cee192b3685583fbc615a3d284f5b2e0c50eaef513204f31c01ccfba8a20a5c2",
+    "policy_sha256": "1772ee5994eaa7b81e23585a905d7d400ee01884fe1503cdb48b8599a5b09dae",
+    "template_sha256": "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21"
+  },
+  "policy_sha256": "1772ee5994eaa7b81e23585a905d7d400ee01884fe1503cdb48b8599a5b09dae",
+  "template_sha256": "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21",
+  "decoding_constraint": {
+    "version": "single_token_label_logits_mask_v1",
+    "allowed_labels": [
+      "0",
+      "1",
+      "2"
+    ],
+    "label_token_ids": {
+      "0": 15,
+      "1": 16,
+      "2": 17
+    },
+    "max_new_tokens": 1,
+    "probability_semantics": "softmax over first-step logits restricted to labels 0/1/2",
+    "sha256": "dfc6f2e34fdde9a340e27c6eccd933fe956113dac13a108aa26d7482effcd330"
+  },
+  "load": {
+    "time_s": 6.91,
+    "peak_vram_mb": 15622.61
+  },
+  "profiling": {
+    "warmup_count": 10,
+    "inputs": 128,
+    "repetitions": 3,
+    "total_expected": 384,
+    "total_ok": 384,
+    "oom_count": 0,
+    "constraint_error_count": 0,
+    "runtime_error_count": 0,
+    "completion_rate": 1.0,
+    "gpu_interference_count": 0,
+    "gpu_interference_rate": 0.0
+  },
+  "latency": {
+    "wall_p50_ms": 122.79,
+    "wall_p95_ms": 140.01,
+    "wall_p99_ms": 146.14,
+    "cuda_p50_ms": 122.75,
+    "cuda_p95_ms": 139.97,
+    "cuda_p99_ms": 146.1,
+    "n_samples": 384
+  },
+  "latency_by_input_length_tercile": {
+    "short": {
+      "wall_p50_ms": 117.49,
+      "wall_p95_ms": 122.64,
+      "wall_p99_ms": 123.33,
+      "cuda_p50_ms": 117.45,
+      "cuda_p95_ms": 122.6,
+      "cuda_p99_ms": 123.29,
+      "n_samples": 129
+    },
+    "medium": {
+      "wall_p50_ms": 122.79,
+      "wall_p95_ms": 123.95,
+      "wall_p99_ms": 124.69,
+      "cuda_p50_ms": 122.74,
+      "cuda_p95_ms": 123.91,
+      "cuda_p99_ms": 124.65,
+      "n_samples": 129
+    },
+    "long": {
+      "wall_p50_ms": 130.93,
+      "wall_p95_ms": 145.47,
+      "wall_p99_ms": 146.32,
+      "cuda_p50_ms": 130.89,
+      "cuda_p95_ms": 145.44,
+      "cuda_p99_ms": 146.28,
+      "n_samples": 126
+    }
+  },
+  "errors": [],
+  "error_count": 0,
+  "passed": true
+}
