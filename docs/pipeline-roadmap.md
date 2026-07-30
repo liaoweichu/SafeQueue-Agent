@@ -9,14 +9,14 @@
 | 字段 | 当前决定 |
 | --- | --- |
 | 项目目标 | 验证 SafeQueue 是否能在硬安全边界下，把有限验证算力作为多租户排队资源进行调度，并改善尾延迟与成本而不牺牲危险动作控制和租户公平 |
-| 当前阶段 | `experiment_planning` |
-| 当前门禁 | `G2_frozen` |
+| 当前阶段 | `experiment_execution` |
+| 当前门禁 | `G3_authorized_pending_score_cache` |
 | 当前受众 | 研究团队内部；尚未绑定投稿受众 |
 | 目标 venue | `TBD`；首轮系统证据后在 Systems / Security / AI Systems 家族中收敛 |
 | 时间基线 | 采用综合分析中的相对 14 周研究节奏；尚无固定投稿截止日期 |
 | 计算约束 | 单张 NVIDIA RTX 4090D，24 GB 显存；优先 trace 重放、缓存强验证器输出和轻量模型 |
 | 隐私边界 | C1 方向、内部报告和未来未公开结果按私有材料处理；检索只使用公开安全查询，不粘贴私有原文或本地路径 |
-| 当前决定 | G1 已条件通过；G2 v3 的同机 constrained profiling 与审计已通过并冻结。G3 主重放、训练或论文写作仍需单独 Gate |
+| 当前决定 | G1 已条件通过；G2 v3 的同机 constrained profiling 与审计已通过并冻结。已单独授权 tau2-only 的最小 G3 replay；训练、部署、G4 和论文写作仍需单独 Gate |
 
 ## 2. 当前工件与缺口
 
@@ -44,6 +44,7 @@
 2. v2 profiling selection 的 123/128 单一 stratum 失衡已作废；v3 已以完整 chat prompt token 生成 43/43/42 的 128 条 selection，并完成两档 `128×3` profiling。
 3. G3 尚无真实离散事件重放结果；不得把 profiling 结果写成 SafeQueue 的延迟、安全或公平收益结论。
 4. G3 消费序列化 risk score 时须裁剪到 [0, 1]，以消除已审计的浮点级（最大 1.12e-7）概率和误差。
+5. 冻结的 tau2 evaluation 为 benign-only，而 AgentDojo 没有调用前 action；最小 G3 的 F5 matched-danger 只能标记为 `not_evaluable`，不得据此升级 G4。
 
 ## 3. 门禁链
 
@@ -90,7 +91,7 @@ W14+    G6–G8 选会、写作、评审、完整性与投稿检查
 
 ## 7. 当前交接
 
-下一 owner：`ccf-experiment-designer`  
-交接工件：`docs/g2-freeze-readiness.md`  
-当前状态：`G2_frozen`，v3 云端重跑已完成，独立审计通过。
-交接条件：G3 需单独实现离散事件重放，并复用固定 selection、服务时间样本、硬集合、风险阈值和失败关闭语义；在新的 Go/No-Go 前不启动训练、线上部署或论文写作。
+下一 owner：研究实现执行者（由 `ccf-experiment-designer` 约束证据边界）
+交接工件：`docs/handoffs/03-g3-minimal-replay.md` 与 `docs/cloud-gpu-g3-score-cache-checklist.md`
+当前状态：`G3_authorized_pending_score_cache`；G2 v3 云端重跑与独立审计保持冻结。
+交接条件：仅生成 700×2 无 oracle score cache，并以固定 selection、服务时间样本、硬集合、风险阈值和失败关闭语义运行 tau-only replay；在新的 Go/No-Go 前不启动训练、线上部署或论文写作，也不将 tau-only 结果晋级为完整 G3。

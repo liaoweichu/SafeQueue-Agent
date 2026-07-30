@@ -8,8 +8,8 @@ target_venue:
   year: "TBD"
   mode: "review"
 stage:
-  current: "experiment_planning"
-  gate: "G2_frozen"
+  current: "experiment_execution"
+  gate: "G3_authorized_pending_score_cache"
   updated_at: "2026-07-30"
 artifacts:
   manuscript: "manuscript/main.tex"
@@ -48,7 +48,15 @@ artifacts:
   g2_cloud_execution_checklist: "docs/cloud-gpu-execution-checklist.md"
   g2_cloud_preflight: "scripts/g2_cloud_preflight.py"
   g2_profiling_input_contract: "docs/g2-profiling-input-contract.md"
-  next_handoff: "docs/handoffs/02-g2-minimal-falsification.md"
+  g3_config: "experiments/configs/g3-minimal-tau-replay.json"
+  g3_handoff: "docs/handoffs/03-g3-minimal-replay.md"
+  g3_cloud_score_cache_checklist: "docs/cloud-gpu-g3-score-cache-checklist.md"
+  g3_score_cache_runner: "scripts/g3_score_cache_runner.py"
+  g3_score_cache_auditor: "scripts/audit_g3_score_cache.py"
+  g3_replay_runner: "scripts/g3_minimal_replay.py"
+  g3_replay_auditor: "scripts/audit_g3_replay_artifacts.py"
+  g3_replay_core: "src/g3_replay.py"
+  next_handoff: "docs/handoffs/03-g3-minimal-replay.md"
 claims: []
 experiments:
   - id: "g2_minimal_falsification"
@@ -60,6 +68,15 @@ experiments:
     protocol: "experiments/protocols/g2-minimal-falsification.md"
     config: "experiments/configs/g2-minimal-falsification.yaml"
     scope_guard: "No full training, online deployment, paper writing, or result claims."
+  - id: "g3_tau2_minimal_discrete_event_replay"
+    status: "authorized_pending_score_cache"
+    scope: "tau2-bench-only offline discrete-event replay; no AgentDojo action fabrication"
+    result_status: "none"
+    authorization: "owner_authorized_2026-07-30"
+    blockers: "requires 700x2 frozen-model score-cache rows; matched-danger remains not evaluable in the tau2-only evaluation slice"
+    protocol: "docs/handoffs/03-g3-minimal-replay.md"
+    config: "experiments/configs/g3-minimal-tau-replay.json"
+    scope_guard: "No training, online deployment, G4 expansion, paper claim, or G3 promotion without separately materialized dangerous evaluation actions."
 reviews: []
 revision_ledger:
   path: "reviews/revision-ledger.md"

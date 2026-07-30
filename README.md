@@ -2,7 +2,7 @@
 
 论文项目：**SafeQueue: Risk-Calibrated Scheduling of Verification Workloads for Multi-Tenant Edge Agents**
 
-当前状态：`experiment_planning`（`G2_frozen`）
+当前状态：`experiment_execution`（`G3_authorized_pending_score_cache`）
 目标会议：`TBD`  
 模板状态：中性 LaTeX 占位模板；尚未绑定具体会议。
 
@@ -38,15 +38,16 @@
 - [G2 冻结准备状态](docs/g2-freeze-readiness.md)
 - [Profiling 输入 contract](docs/g2-profiling-input-contract.md)
 - [云 GPU 执行清单](docs/cloud-gpu-execution-checklist.md)
-- [下一阶段交接包](docs/handoffs/02-g2-minimal-falsification.md)
+- [G3 云 GPU score-cache 清单](docs/cloud-gpu-g3-score-cache-checklist.md)
+- [G3 最小重放交接包](docs/handoffs/03-g3-minimal-replay.md)
 
-G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 的无 oracle 泄漏 1,000 条固定事件设计、policy/materializer、映射和标签签核均已冻结。云端 v3 在同一 RTX 4090D 上完成 43/43/42 分层、受约束解码和两档 `128×3` profiling；独立审计 33/33 项通过，故 Gate 已升为 `G2_frozen`。这仅冻结协议与服务时间证据：五方法主重放、完整训练、在线部署和论文结论仍未执行。
+G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 的无 oracle 泄漏 1,000 条固定事件设计、policy/materializer、映射和标签签核均已冻结。云端 v3 在同一 RTX 4090D 上完成 43/43/42 分层、受约束解码和两档 `128×3` profiling；独立审计 33/33 项通过，故 G2 保持 `G2_frozen`。现已单独授权 G3 的最小离散事件重放：先在同一云机生成 700×2 的双 verifier score cache，再运行 τ-bench-only replay。其 500 条评估动作均为 benign，因此 matched-danger 只能标为 `not_evaluable`，不得升级为完整 G3 Go 或 G4 授权。
 
 ## 下一步所有权
 
 1. `ccf-literature-searcher`：已完成 G1 近期近邻、数据许可和基线可实施性核验。
-2. `ccf-experiment-designer`：为 G3 单独设计最小离散事件重放实现包，复用已冻结的服务时间与安全语义。
-3. 研究实现执行者：只有在 G3 获得单独授权后才能按冻结协议实现并运行 MVE；不得由计划文档预填结果。
+2. 研究实现执行者：按已授权的最小 G3 协议，在云 GPU 生成双 verifier score cache、审计后运行 replay；不得由计划文档预填结果。
+3. `ccf-experiment-designer`：复核 tau-only pilot 的证据边界；在有真实 dangerous action 之前不得给出完整 G3 Go/No-Go。
 4. `ccf-pipeline-orchestrator`：在每个 Go/No-Go 点更新阶段与下一 owner。
 5. `ccf-paper-writer`、`ccf-paper-reviewer`、`ccf-integrity-auditor`：证据冻结后进入写作—评审—审计闭环。
 6. `ccf-submission-checker`：选定目标会议后核验官方模板、匿名性、构建与 artifact。
