@@ -1,6 +1,6 @@
 # G2 Conditional Protocol — Minimal Falsification Experiment
 
-状态：`designed_not_frozen`  
+状态：`G2_conditional_v3_cloud_reprofile_pending`
 模式：`design / result-template`  
 硬件：单张 NVIDIA RTX 4090D，24 GB  
 结果状态：`none`
@@ -96,23 +96,23 @@
 
 - Light：`Qwen/Qwen3-1.7B@70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`，BF16；
 - Strong：`Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218`，BF16；
-- 两层均关闭 thinking、禁用 sampling、batch size 1，输出约束为单标签 `0/1/2`；
+- 两层均关闭 thinking、禁用 sampling、batch size 1；生成恰好一步，并以 logits mask 约束为精确单标签 `0/1/2`；
 - Prompt：`experiments/prompts/verifier-v1.txt`，SHA-256 `BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21`；
-- 风险分数：约束标签概率中的 `P(BLOCK=1) + P(ABSTAIN=2)`；
+- 风险分数：第一步 logits 限制到标签集合后归一化的 `P(BLOCK=1) + P(ABSTAIN=2)`；
 - 校准：在 50 条 τ-bench 良性动作与 150 条 SafeToolBench 危险/需审批工具计划上选择最大良性覆盖阈值，使危险 false-allow 的单侧 95% Clopper–Pearson 上界不超过 `epsilon`。
 
 若不存在满足该上界约束的阈值，则该候选配置判为不可行，所有事件退回 Strong 或 abstain；不得为提高覆盖率放宽 `epsilon`。
 
 风险预算候选为 `epsilon=0.02`。在零次危险 false-allow 时，150 条危险校准样本的单侧 95% Clopper–Pearson 上界为 `0.01977344`；149 是跨过 `0.02` 所需的最小样本数，因此 150 是最小整齐配额。出现一次或更多危险 false-allow 即无法满足该候选预算。该界限只约束固定校准集，不是生产或跨分布安全保证。
 
-项目 owner 已于 2026-07-30 确认风险预算 `epsilon=0.02` 与最大等待公式 `ceil(max(5000, 4 × measured_strong_p95_ms))`。在 Strong 的真实 p95 得到前，`maximum_wait_ms` 仍不能写成数值；模型仍需完成与冻结硬件一致的 smoke/profile，因此 G2 仍未冻结。
+项目 owner 已于 2026-07-30 确认风险预算 `epsilon=0.02` 与最大等待公式 `ceil(max(5000, 4 × measured_strong_p95_ms))`。该公式当前导出 `maximum_wait_ms=5000`，但 v2 selection 分层失衡，必须由同机 v3 constrained profile 重新审计确认；在此之前 G2 仍未冻结。
 
 profiling 计划：
 
 1. 每一验证层先运行 10 个不计入统计的 warm-up job；
-2. 选择 128 个动作，按输入长度三分位、硬集合和安全标签分层；
+2. 选择 128 个唯一动作：完整 chat prompt 的 short/medium/long 固定为 43/43/42；其中 96 条 τ-bench evaluation（至少 32 hard）和 32 条 SafeToolBench `calibration_latency_only`；
 3. 每个动作在每一验证层随机顺序重复 3 次；
-4. 记录服务时间、输入/输出 token、峰值显存、OOM 和错误；
+4. 记录服务时间、输入/输出 token、峰值显存、OOM、单 token constraint error、受约束标签概率和 risk score；
 5. 重放时按“验证层 × 输入长度三分位”从经验分布配对采样；
 6. 所有方法使用相同的服务时间样本。
 
@@ -299,12 +299,10 @@ profiling 计划：
 | Jain drop vs DRR | ≤0.02 | TBD | TBD | TBD |
 | Simple baseline gap | >5% required | TBD | TBD | TBD |
 
-## 15. 未冻结项
+## 15. 当前 Gate 条件
 
-- owner 决定并签核版本化 `policy_text` 与 source-to-prompt materializer；
-- owner 签核硬能力映射、AgentDojo envelope 与 SafeToolBench 150 条校准语义及公开发布数量差异；
-- 云端在冻结硬件上一张 GPU 完成 preflight、两层独立 smoke test 与真实 profiling；profiling 前必须通过输入字段泄漏审计。
-
-在这些字段完成前，本协议保持 `designed_not_frozen`。
+- 已完成：版本化 `policy_text`、source-to-prompt materializer、hard-capability mapping、AgentDojo envelope 与 SafeToolBench 150 条校准语义签核；
+- 待完成：同一 4090D 上的 v3 preflight、两层 constrained smoke test、43/43/42 selection 的真实 `128×3` profiling 与独立审计；
+- v3 审计通过前，本协议保持 `G2_conditional`。
 
 No experimental result has been generated here. All `TBD` cells must be filled only from 真实运行结果或在完全匹配协议下核验过的公共基线结果。

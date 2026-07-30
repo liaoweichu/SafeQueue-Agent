@@ -14,12 +14,19 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
 from pathlib import Path
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.verifier_prompting import render_chat_prompt
+from src.verifier_runtime import SingleTokenLabelConstraint
 
 # ── Model definitions ──────────────────────────────────────────────────
 MODELS = {
@@ -85,23 +92,6 @@ def load_policy() -> str:
     return POLICY_PATH.read_text(encoding="utf-8")
 
 
-def render_prompt(template: str, policy: str, case: dict, tokenizer) -> str:
-    """Render a prompt using Qwen3 chat template with enable_thinking=False."""
-    rendered = template.replace("{{policy}}", policy)
-    rendered = rendered.replace("{{state_summary}}", case["state_summary"])
-    rendered = rendered.replace("{{user_intent}}", case["user_intent"])
-    rendered = rendered.replace("{{source}}", case["source"])
-    rendered = rendered.replace("{{tool_name}}", case["tool_name"])
-    rendered = rendered.replace("{{tool_arguments}}", case["tool_arguments"])
-    rendered = rendered.replace(
-        "{{hard_required}}", "true" if case["hard_required"] else "false"
-    )
-    messages = [{"role": "user", "content": rendered}]
-    return tokenizer.apply_chat_template(
-        messages, tokenize=False, enable_thinking=False, add_generation_prompt=True
-    )
-
-
 def get_peak_vram_mb() -> float:
     if not torch.cuda.is_available():
         return 0.0
@@ -111,6 +101,16 @@ def get_peak_vram_mb() -> float:
 def reset_peak_vram() -> None:
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
+
+
+def git_revision() -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "HEAD"], capture_output=True, check=True, text=True
+        )
+        return completed.stdout.strip()
+    except Exception:
+        return ""
 
 
 def run_smoke_test(tier: str) -> dict:
@@ -123,6 +123,10 @@ def run_smoke_test(tier: str) -> dict:
         "dtype": "bfloat16",
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "gpu": {},
+        "code": {
+            "git_revision": git_revision(),
+            "smoke_test_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        },
         "cases": [],
         "passed": False,
         "errors": [],
@@ -151,6 +155,9 @@ def run_smoke_test(tier: str) -> dict:
         tokenizer = AutoTokenizer.from_pretrained(
             spec["model_id"], revision=spec["revision"]
         )
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token
+        constraint = SingleTokenLabelConstraint.from_tokenizer(tokenizer)
         model = AutoModelForCausalLM.from_pretrained(
             spec["model_id"],
             revision=spec["revision"],
@@ -176,13 +183,14 @@ def run_smoke_test(tier: str) -> dict:
 
     print(f"\nTemplate SHA-256: {hashlib.sha256(template.encode()).hexdigest().upper()}")
     print(f"Policy SHA-256: {hashlib.sha256(policy.encode()).hexdigest().upper()}")
+    result["decoding_constraint"] = constraint.metadata
 
     all_passed = True
     for i, case in enumerate(SAMPLE_PROMPTS):
         reset_peak_vram()
-        prompt = render_prompt(template, policy, case, tokenizer)
+        prompt = render_chat_prompt(case, template, policy, tokenizer)
 
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        inputs = tokenizer(prompt, add_special_tokens=False, return_tensors="pt").to(model.device)
         input_tokens = inputs.input_ids.shape[1]
 
         if input_tokens > 4096:
@@ -200,9 +208,12 @@ def run_smoke_test(tier: str) -> dict:
             with torch.no_grad():
                 outputs = model.generate(
                     **inputs,
-                    max_new_tokens=4,
+                    max_new_tokens=1,
                     do_sample=False,
-                    pad_token_id=tokenizer.pad_token_id or tokenizer.eos_token_id,
+                    pad_token_id=tokenizer.pad_token_id,
+                    logits_processor=constraint.logits_processor(),
+                    return_dict_in_generate=True,
+                    output_scores=True,
                 )
         except torch.cuda.OutOfMemoryError:
             case_result = {
@@ -228,17 +239,11 @@ def run_smoke_test(tier: str) -> dict:
         elapsed_ms = (time.time() - t0) * 1000
 
         # Decode output
-        new_tokens = outputs[0][input_tokens:]
-        label_text = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+        new_tokens = outputs.sequences[0][input_tokens:]
+        label, label_text = constraint.decode(tokenizer, new_tokens)
         output_token_count = len(new_tokens)
-
-        # Parse label
-        try:
-            label = label_text[0] if label_text else ""
-        except IndexError:
-            label = ""
-
-        valid_label = label in ("0", "1", "2")
+        valid_label = label is not None
+        probabilities = constraint.probabilities(outputs.scores[0][0])
 
         case_result = {
             "case": case["desc"],
@@ -247,6 +252,8 @@ def run_smoke_test(tier: str) -> dict:
             "raw_output": label_text[:50],
             "parsed_label": label,
             "valid_label": valid_label,
+            "constrained_label_probabilities": probabilities,
+            "risk_score": round(probabilities["1"] + probabilities["2"], 8),
             "expected_label": case.get("expected_label"),
             "elapsed_ms": round(elapsed_ms, 2),
             "peak_vram_inference_mb": round(get_peak_vram_mb(), 2),

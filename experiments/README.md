@@ -10,4 +10,4 @@
 
 任何结果都应记录代码版本、配置、数据版本、随机种子、运行环境和时间。
 
-当前 G2 协议、配置、prompt 与 profiling runbook 的状态均为 `designed_not_frozen` 或 `candidate_not_run`；没有实验结果，也未授权五方法主重放。
+当前 G2 为 `G2_conditional`：v3 协议、完整 prompt 分层和受约束解码已冻结到本地代码，但同机 4090D 的 v3 `128×3` profiling 与独立审计尚未完成；没有实验结果，也未授权五方法主重放。

@@ -1,13 +1,13 @@
 # Handoff 02 — G2 conditional minimal falsification
 
-状态：`G2_frozen`  
-Gate：`G2_frozen`  
+状态：`G2_conditional`
+Gate：`G2_conditional`
 Owner：`ccf-pipeline-orchestrator`  
-模式：`standard / ready_for_G3_implementation`
+模式：`standard / v3_cloud_reprofile_pending`
 
 ## 编排决策
 
-G1 的 `conditional_pass` 已被编排器接收，项目进入 `experiment_planning`。该转换只授权设计最小证伪实验，不代表 G2 已冻结，也不授权实验实现、运行、完整训练、在线部署、论文写作或结果主张。
+G1 的 `conditional_pass` 已被编排器接收，项目进入 `experiment_planning`。当前仅额外授权 v3 的同机 preflight、constrained smoke 与 `128×3` latency profiling；这不代表 G2 已冻结，也不授权五方法主重放、完整训练、在线部署、论文写作或结果主张。
 
 ## 已接收输入
 
@@ -40,6 +40,8 @@ G1 的 `conditional_pass` 已被编排器接收，项目进入 `experiment_plann
 - SafeToolBench review packet：`docs/audits/g2-safetoolbench-review.md`
 - profiling 输入 contract：`docs/g2-profiling-input-contract.md`
 - 云 GPU 执行清单：`docs/cloud-gpu-execution-checklist.md`
+- v3 selection：`data/processed/g2-profiling-selection.v3.json`
+- v3 独立审计器：`scripts/audit_g2_profiling_artifacts.py`
 - 结果状态：`none`
 
 ## G2 冻结前必填项
@@ -47,18 +49,18 @@ G1 的 `conditional_pass` 已被编排器接收，项目进入 `experiment_plann
 以下任一项缺失，Gate 保持 `G2_conditional`：
 
 1. ~~τ-bench、AgentDojo 与 SafeToolBench 的精确 commit、任务快照和许可记录~~：已完成；
-2. 验证器候选、版本、prompt 哈希和精度：已填写，仍待 4090D smoke/profile；
-3. 版本化 `policy_text` 与 source-to-prompt materializer 的 owner 决策、实现和字段泄漏审计；
+2. 验证器候选、版本、prompt 哈希和精度：已填写；v3 constrained smoke/profile 待在同机完成；
+3. ~~版本化 `policy_text` 与 source-to-prompt materializer 的 owner 决策、实现和字段泄漏审计~~：已完成；
 4. ~~用户确认风险预算候选 `epsilon=0.02` 与最大等待公式~~：已于 2026-07-30 确认；
-5. 版本化硬能力注册表的人工映射审计；
+5. ~~版本化硬能力注册表的人工映射审计~~：已完成；
 6. ~~1,000 条事件数量门与危险校准支持门~~：已通过；拆分为 50 良性 + 150 危险校准、500 Retail + 300 AgentDojo 评估；
 7. AgentDojo 目标动作 envelope 与可观测硬映射复核；
 8. SafeToolBench 150 条校准标签的 100% 复核与论文/压缩包数量差异签核；
-9. 云端完成与冻结硬件一致的 preflight、两层 smoke test 与真实服务时间 profiling；前提是第 3 项已经关闭。
+9. 云端完成 v3 的同机 preflight、两层 constrained smoke test、43/43/42 选择集和两档真实 `128×3` profiling，并通过 `audit_g2_profiling_artifacts.py`；前提是第 3 项已经关闭。
 
 ## 冻结判定
 
-只有在上述必填项完整、所有方法共享相同到达流、服务时间样本、硬集合、风险阈值与失败关闭语义时，编排器才能把 Gate 改为 `G2_frozen`。
+只有在上述必填项完整、v3 独立审计通过、所有方法共享相同到达流、服务时间样本、硬集合、风险阈值与失败关闭语义时，编排器才能把 Gate 改为 `G2_frozen`。
 
 ## 失败或返回
 

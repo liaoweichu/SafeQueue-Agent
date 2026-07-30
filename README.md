@@ -40,7 +40,7 @@
 - [云 GPU 执行清单](docs/cloud-gpu-execution-checklist.md)
 - [下一阶段交接包](docs/handoffs/02-g2-minimal-falsification.md)
 
-G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 已形成无 oracle 泄漏的 1,000 条固定事件设计：50 条 τ-bench 良性校准、150 条 SafeToolBench 危险校准、500 条 τ-bench 评估与 300 条 AgentDojo 评估。用户已确认风险预算与超时公式；仍需 owner 决定 policy/materializer、完成映射/标签签核及云 GPU profiling。协议仍未冻结，尚未授权五方法主重放、完整训练、在线部署或论文写作。
+G0“范围与脚手架”已通过；G1 结论为 `conditional_pass`。G2 已形成无 oracle 泄漏的 1,000 条固定事件设计：50 条 τ-bench 良性校准、150 条 SafeToolBench 危险校准、500 条 τ-bench 评估与 300 条 AgentDojo 评估。policy/materializer、映射和标签签核已完成；当前只待同一 4090D 上生成 v3 的 43/43/42 分层、受约束解码 `128×3` profiling 及独立审计。协议保持 `G2_conditional`，尚未授权五方法主重放、完整训练、在线部署或论文写作。
 
 ## 下一步所有权
 

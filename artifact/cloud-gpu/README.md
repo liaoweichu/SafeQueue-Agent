@@ -1,5 +1,13 @@
-# Cloud GPU Artifacts
+# Cloud GPU Artifact Status
 
-本目录仅保存在云服务器生成、但不应提交的 profiling 工件：环境 preflight、模型加载日志、逐次测量 JSONL 与汇总 JSON。运行前先阅读 `docs/cloud-gpu-execution-checklist.md`。
+`preflight.json`, `profiling-light.jsonl`, and `profiling-strong.jsonl` are v2 diagnostic artifacts. They demonstrate that the recorded 4090D environment could execute both models, but their selection has an invalid 123/128 short/non-hard allocation and no logits-mask decoding. They are retained for provenance only and must not be used by G3 replay.
 
-任何文件都不得包含 Hugging Face token、云账号凭据或未脱敏的私有提示词。
+The only candidate freeze artifacts are the separately named v3 files produced by `docs/cloud-gpu-execution-checklist.md`:
+
+- `preflight.v3.json`
+- `smoke-test-results.v3.json`
+- `profiling-light.v3.jsonl` and `profiling-light.v3.summary.json`
+- `profiling-strong.v3.jsonl` and `profiling-strong.v3.summary.json`
+- `g2-v3-audit.json`
+
+Until `g2-v3-audit.json` reports `passed: true`, the project gate is `G2_conditional`.

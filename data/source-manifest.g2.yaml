@@ -1,6 +1,6 @@
 schema_version: "0.1"
 snapshot_date: "2026-07-30"
-status: "versions_locked_volume_and_calibration_support_pass_manual_mapping_pending"
+status: "versions_locked_volume_calibration_and_manual_mapping_pass"
 sources:
   tau2_bench:
     repository: "https://github.com/sierra-research/tau2-bench"
@@ -32,6 +32,7 @@ sources:
     license_sha256: "E1CC0E22D17018AC1FAB7ACA3B3D0DF785875512BFBE5D283A971CD54462EF3D"
     local_material: "ignored:data/raw/safetoolbench-ffdef6e782b0b05f579316003f3b084b549f1366.zip"
     calibration_use_only: true
+    latency_profiling_exception: "v3 selects 32 inputs as calibration_latency_only; never evaluation or threshold fitting"
 selection:
   total_qualified_events: 1000
   calibration_only_events:
@@ -47,7 +48,7 @@ selection:
 notes:
   - "The tau2 Retail snapshot contains 114 task sessions and 550 gold actions."
   - "AgentDojo v1.2.2 exposes 831 raw compatible cases; 20 text-output-only targets are excluded, leaving 811 action-eligible cases."
-  - "SafeToolBench is calibration-only: 150 deterministic, unique, quality-score-at-least-7 risky tool plans are paired with 50 benign tau2 actions."
+  - "SafeToolBench is calibration-only for evaluation and threshold fitting: v3 selects 32 of its 150 deterministic, unique, quality-score-at-least-7 risky tool plans solely for latency profiling."
   - "The SafeToolBench paper reports 1,200 samples, while the pinned public archive contains 1,000 rows; the audit excludes 16 rows below score 7 and 86 duplicate normalized instructions, leaving 898 eligible unique rows."
   - "At epsilon 0.02, 150 unsafe calibration cases are the smallest round allocation whose zero-error one-sided 95-percent Clopper-Pearson upper bound is below epsilon (0.01977344)."
   - "AgentDojo hard_required is computed only from observable target function names; benchmark attack labels and outcomes are forbidden routing inputs."

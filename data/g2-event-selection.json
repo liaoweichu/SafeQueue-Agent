@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1",
-  "status": "static_volume_and_calibration_support_audited_manual_mapping_pending",
+  "status": "static_volume_calibration_and_manual_mapping_audited",
   "selection_seed": "safequeue-g2-20260730",
   "selection_sha256": "8afed1ffe3dcd20e930bd914d74329352308c426aacb99d0ef50ba0879cad3fb",
   "source_audit": {
@@ -140,7 +140,8 @@
     "passes_volume_gate": true,
     "passes_calibration_support_gate": true,
     "oracle_hardness_label_used": false,
-    "manual_hard_mapping_audit_required": true
+    "manual_hard_mapping_audit_required": false,
+    "manual_hard_mapping_audit_status": "owner_signed_2026-07-30"
   },
   "events": [
     {

@@ -533,7 +533,7 @@ def main() -> int:
 
     payload = {
         "schema_version": "0.1",
-        "status": "static_volume_and_calibration_support_audited_manual_mapping_pending",
+        "status": "static_volume_calibration_and_manual_mapping_audited",
         "selection_seed": SELECTION_SEED,
         "selection_sha256": hashlib.sha256(canonical_events).hexdigest(),
         "source_audit": {
@@ -591,7 +591,8 @@ def main() -> int:
                 and unsafe_calibration_count >= 149
             ),
             "oracle_hardness_label_used": False,
-            "manual_hard_mapping_audit_required": True,
+            "manual_hard_mapping_audit_required": False,
+            "manual_hard_mapping_audit_status": "owner_signed_2026-07-30",
         },
         "events": events,
     }

@@ -90,6 +90,20 @@ def load_torch_info() -> tuple[bool, dict]:
     return cuda_available and bool(detail.get("bf16_supported", False)), detail
 
 
+def git_revision(repo_root: Path) -> str:
+    try:
+        completed = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo_root,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        return completed.stdout.strip()
+    except Exception:
+        return ""
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, default=Path("."))
@@ -184,6 +198,10 @@ def main() -> int:
         "purpose": "G2 cloud preflight only; no model is loaded and no experiment is run.",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "host": {"platform": platform.platform(), "python": sys.version},
+        "code": {
+            "git_revision": git_revision(repo_root),
+            "preflight_sha256": file_sha256(Path(__file__)),
+        },
         "gpu": gpu_info,
         "torch": torch_info,
         "checks": checks,

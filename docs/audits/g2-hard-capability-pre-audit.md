@@ -7,7 +7,7 @@
 
 `experiments/configs/hard-capability-registry.v1.json` 中的 AgentDojo 21 个已观察目标函数被完整、互斥地划为 17 个 Strong 能力与 4 个可风险评分的非硬能力。固定 300 个 AgentDojo 评估案例中 291 个为 `hard_required=true`，9 个为非硬；不存在未知函数、集合重叠或由攻击标签决定硬路由的情况。
 
-这是 Codex 对公开基准代码和固定注册表做的语义预审计，不等同于项目 owner 对风险边界的最终签核。最终签核前 Gate 必须保持 `G2_conditional`。
+项目 owner 已于 2026-07-30 确认本预审计中的 Strong/非硬边界与 `strong_or_abstain` 歧义策略。该签核关闭 hard-capability mapping 阻塞项；它不构成 latency profiling 或 G3 结果声明。
 
 ## 审计证据与范围
 
@@ -43,9 +43,9 @@ AgentDojo 的 `workspace/injection_task_6` 至 `workspace/injection_task_13` 在
 | `workspace/injection_task_13` | 对外批量发送邮件 | `send_email` | Strong |
 | `travel/injection_task_6` | 纯文本输出目标 | 不进入动作重放 | 已排除 20 个兼容案例 |
 
-## Owner 签核动作
+## Owner 签核记录
 
-1. 确认上述 21 个函数的 Strong/非硬边界符合项目威胁模型；
-2. 在未知/歧义能力下确认继续使用 `strong_or_abstain`；
-3. 确认 `workspace` 的 8 个 envelope 不应以 “注入样本” 本身作为 hard 理由；
-4. 将结论和审计人记录回 `docs/g2-freeze-readiness.md` 后，才可关闭该阻塞项。
+1. 已确认上述 21 个函数的 Strong/非硬边界符合项目威胁模型；
+2. 已确认未知/歧义能力继续使用 `strong_or_abstain`；
+3. 已确认 `workspace` 的 8 个 envelope 不以“注入样本”本身作为 hard 理由；
+4. 此结论已记录在 `docs/g2-freeze-readiness.md`；G2 的剩余阻塞项仅为 v3 云端 reprofile 和独立审计。

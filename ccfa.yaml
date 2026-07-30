@@ -9,7 +9,7 @@ target_venue:
   mode: "review"
 stage:
   current: "experiment_planning"
-  gate: "G2_frozen"
+  gate: "G2_conditional"
   updated_at: "2026-07-30"
 artifacts:
   manuscript: "manuscript/main.tex"
@@ -32,6 +32,8 @@ artifacts:
   g2_verifier_prompt: "experiments/prompts/verifier-v1.txt"
   g2_verifier_policy: "experiments/prompts/policy-v1.txt"
   g2_profiling_runbook: "experiments/profiling/g2-verifier-profiling-runbook.md"
+  g2_profiling_selection_v3: "data/processed/g2-profiling-selection.v3.json"
+  g2_profiling_v3_audit: "scripts/audit_g2_profiling_artifacts.py"
   g2_materializer_package: "src/materializers"
   g2_materialization_script: "scripts/materialize_g2_prompts.py"
   g2_freeze_readiness: "docs/g2-freeze-readiness.md"
@@ -45,11 +47,11 @@ artifacts:
 claims: []
 experiments:
   - id: "g2_minimal_falsification"
-    status: "frozen"
+    status: "conditional"
     scope: "trace_replay_only"
     result_status: "none"
-    freeze_readiness: "all_blockers_closed_gate_frozen_v2"
-    freeze_blockers: "none — all fixes applied and reprofiling complete"
+    freeze_readiness: "v3_local_protocol_ready_cloud_reprofile_pending"
+    freeze_blockers: "v3 selection, constrained decoding, and same-cloud 128x3 artifacts require final audit"
     protocol: "experiments/protocols/g2-minimal-falsification.md"
     config: "experiments/configs/g2-minimal-falsification.yaml"
     scope_guard: "No full training, online deployment, paper writing, or result claims."
