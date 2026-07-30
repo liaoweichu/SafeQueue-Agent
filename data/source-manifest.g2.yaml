@@ -1,0 +1,54 @@
+schema_version: "0.1"
+snapshot_date: "2026-07-30"
+status: "versions_locked_volume_and_calibration_support_pass_manual_mapping_pending"
+sources:
+  tau2_bench:
+    repository: "https://github.com/sierra-research/tau2-bench"
+    release: "v1.0.1"
+    commit: "fc0055dc4e0a316c3f83133267fbd6faaa770992"
+    archive_url: "https://codeload.github.com/sierra-research/tau2-bench/zip/refs/tags/v1.0.1"
+    archive_sha256: "6E4C2E706A82C78EB2846A1E8B5DB6C92B38A3C664EB12FB9FEFE4DBC044E0AE"
+    license: "MIT"
+    license_sha256: "E67C5AA0074DFCAEFD3C3A1AEDB94CB539234AECD15D5A972574E3200E6252FE"
+    local_material: "ignored:data/raw/tau2-bench-v1.0.1.zip"
+    selected_domain: "retail"
+  agentdojo:
+    repository: "https://github.com/ethz-spylab/agentdojo"
+    package_release: "v0.1.35"
+    commit: "a75aba7631d3ca5fb7ab938965c97ead2f9ff84b"
+    benchmark_version: "v1.2.2"
+    archive_url: "https://codeload.github.com/ethz-spylab/agentdojo/zip/refs/tags/v0.1.35"
+    archive_sha256: "78DA8287D3F496608BBF1C7EAF48A7E4294493AC907CE96DCFB35763B7114D58"
+    license: "MIT"
+    license_sha256: "4285A071F2D382338E52B4FB0A186D952984A34D43A33D8872E1A1D8CB43401E"
+    local_material: "ignored:data/raw/agentdojo-v0.1.35.zip"
+  safetoolbench:
+    repository: "https://github.com/BITHLP/SafeToolBench"
+    release: "none"
+    commit: "ffdef6e782b0b05f579316003f3b084b549f1366"
+    archive_url: "https://codeload.github.com/BITHLP/SafeToolBench/zip/ffdef6e782b0b05f579316003f3b084b549f1366"
+    archive_sha256: "0F0BA04880DA6C5DE3C36FE7590D5C17976C54E984E020A2A9C15FC1FB696444"
+    license: "MIT"
+    license_sha256: "E1CC0E22D17018AC1FAB7ACA3B3D0DF785875512BFBE5D283A971CD54462EF3D"
+    local_material: "ignored:data/raw/safetoolbench-ffdef6e782b0b05f579316003f3b084b549f1366.zip"
+    calibration_use_only: true
+selection:
+  total_qualified_events: 1000
+  calibration_only_events:
+    tau2_retail_benign: 50
+    safetoolbench_unsafe_for_light_allow: 150
+  heldout_replay_events:
+    tau2_retail: 500
+    agentdojo_security_cases: 300
+  heldout_total: 800
+  selection_seed: "safequeue-g2-20260730"
+  split_unit: "tau2_session_or_public_source_row_or_agentdojo_security_case"
+  event_manifest: "data/g2-event-selection.json"
+notes:
+  - "The tau2 Retail snapshot contains 114 task sessions and 550 gold actions."
+  - "AgentDojo v1.2.2 exposes 831 raw compatible cases; 20 text-output-only targets are excluded, leaving 811 action-eligible cases."
+  - "SafeToolBench is calibration-only: 150 deterministic, unique, quality-score-at-least-7 risky tool plans are paired with 50 benign tau2 actions."
+  - "The SafeToolBench paper reports 1,200 samples, while the pinned public archive contains 1,000 rows; the audit excludes 16 rows below score 7 and 86 duplicate normalized instructions, leaving 898 eligible unique rows."
+  - "At epsilon 0.02, 150 unsafe calibration cases are the smallest round allocation whose zero-error one-sided 95-percent Clopper-Pearson upper bound is below epsilon (0.01977344)."
+  - "AgentDojo hard_required is computed only from observable target function names; benchmark attack labels and outcomes are forbidden routing inputs."
+  - "No raw source archive or extracted source tree is tracked by the project."

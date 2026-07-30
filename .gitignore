@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# LaTeX build products
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# Local datasets and generated results
+data/raw/*
+!data/raw/README.md
+data/processed/*
+!data/processed/README.md
+data/traces/*
+!data/traces/README.md
+experiments/results/*
+!experiments/results/README.md
+artifact/package/*
+!artifact/package/README.md
+artifact/cloud-gpu/*
+!artifact/cloud-gpu/README.md
+
+# Local secrets and machine-specific overrides
+.env
+.env.*
+!.env.example
+configs/local/
