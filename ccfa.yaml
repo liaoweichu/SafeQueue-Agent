@@ -9,7 +9,7 @@ target_venue:
   mode: "review"
 stage:
   current: "experiment_planning"
-  gate: "G2_conditional"
+  gate: "G2_frozen"
   updated_at: "2026-07-30"
 artifacts:
   manuscript: "manuscript/main.tex"
@@ -45,11 +45,11 @@ artifacts:
 claims: []
 experiments:
   - id: "g2_minimal_falsification"
-    status: "designed_not_frozen"
+    status: "frozen"
     scope: "trace_replay_only"
     result_status: "none"
-    freeze_readiness: "parameters_confirmed_owner_signoff_and_cloud_profile_pending"
-    freeze_blockers: "owner signoff on policy payload and source-to-prompt materializer; owner signoff on hard-mapping and AgentDojo envelope pre-audit; owner 150-label and SafeToolBench release-count signoff; cloud GPU preflight, smoke test, and profiling"
+    freeze_readiness: "all_blockers_closed_gate_frozen"
+    freeze_blockers: "none — policy-v1.txt signed, materializers signed, hard-mapping signed, AgentDojo envelope signed, SafeToolBench 150/150 signed, cloud GPU profiling complete"
     protocol: "experiments/protocols/g2-minimal-falsification.md"
     config: "experiments/configs/g2-minimal-falsification.yaml"
     scope_guard: "No full training, online deployment, paper writing, or result claims."

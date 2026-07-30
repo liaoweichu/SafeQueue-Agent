@@ -1,6 +1,6 @@
 # G2 Cloud GPU Execution Checklist
 
-状态：`cloud_handoff_ready_no_remote_action_taken`  
+状态：`completed_gate_frozen`  
 更新日期：2026-07-30
 
 ## 范围与停止线

@@ -1,7 +1,7 @@
 # G2 Hard-Capability Mapping Pre-Audit
 
 日期：2026-07-30  
-状态：`static_semantic_pre_audit_passed_owner_signoff_pending`
+状态：`owner_signed_2026-07-30`
 
 ## 结论
 

@@ -1,9 +1,9 @@
 # Handoff 02 — G2 conditional minimal falsification
 
-状态：`parameters_confirmed_cloud_profile_pending`  
-Gate：`G2_conditional`  
-Owner：`ccf-experiment-designer`  
-模式：`standard / design-only`
+状态：`G2_frozen`  
+Gate：`G2_frozen`  
+Owner：`ccf-pipeline-orchestrator`  
+模式：`standard / ready_for_G3_implementation`
 
 ## 编排决策
 

@@ -1,6 +1,6 @@
 # G2 Profiling Input Contract
 
-状态：`drafted_pending_owner_signoff`  
+状态：`policy_and_materializer_signed`  
 更新日期：2026-07-30
 
 ## 为什么这是冻结前条件

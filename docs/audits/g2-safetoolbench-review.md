@@ -1,7 +1,7 @@
 # G2 SafeToolBench Calibration Review Packet
 
 日期：2026-07-30  
-状态：`source_row_integrity_passed_owner_semantic_signoff_pending`
+状态：`owner_signed_2026-07-30_150of150_pass`
 
 ## 静态完整性结论
 

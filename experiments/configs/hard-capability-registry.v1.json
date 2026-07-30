@@ -1,7 +1,7 @@
 {
   "schema_version": "0.1",
   "registry_version": "1.0.0-candidate",
-  "status": "candidate_pending_manual_audit",
+  "status": "owner_signed_2026-07-30",
   "unknown_or_ambiguous_policy": "strong_or_abstain",
   "rules": [
     {
