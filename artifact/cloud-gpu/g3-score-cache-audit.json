@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3-score-cache",
+  "status": "passed",
+  "checks": {
+    "expected_counts": {
+      "total_per_tier": 700,
+      "tau2_evaluation": 500,
+      "tau2_calibration": 50,
+      "safetoolbench_calibration": 150,
+      "agentdojo_excluded": 300
+    },
+    "light_cache_rows": 700,
+    "strong_cache_rows": 700,
+    "light_validation_errors": [],
+    "strong_validation_errors": [],
+    "cross_tier_errors": [],
+    "agentdojo_rows": 0
+  },
+  "semantics": {
+    "cache_scope": "700 materialized tau2/SafeToolBench inputs per tier",
+    "agentdojo": "excluded; no pre-execution action prompt exists",
+    "risk_score": "must already be in [0,1]; replay clamps again defensively",
+    "oracle_fields": "forbidden in score cache"
+  }
+}

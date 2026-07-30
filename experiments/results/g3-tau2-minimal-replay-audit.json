@@ -1,0 +1,8 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3-minimal-tau-replay",
+  "status": "passed",
+  "result_gate_status": "partial_inconclusive",
+  "scientific_gate": "not_promoted; F5 matched-danger remains not evaluable",
+  "errors": []
+}
