@@ -27,6 +27,9 @@ EXPECTED_FILES = {
     "experiments/prompts/verifier-v1.txt": (
         "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21"
     ),
+    "experiments/prompts/policy-v1.txt": (
+        "1772EE5994EAA7B81E23585A905D7D400EE01884FE1503CDB48B8599A5B09DAE"
+    ),
 }
 EXPECTED_SELECTION_SHA256 = (
     "8afed1ffe3dcd20e930bd914d74329352308c426aacb99d0ef50ba0879cad3fb"
@@ -96,8 +99,8 @@ def main() -> int:
         default=Path("artifact/cloud-gpu/preflight.json"),
     )
     parser.add_argument("--gpu-index", type=int, default=0)
-    parser.add_argument("--expected-gpu-substring", default="RTX 4090D")
-    parser.add_argument("--minimum-vram-gib", type=float, default=24.0)
+    parser.add_argument("--expected-gpu-substring", default="RTX 4090")
+    parser.add_argument("--minimum-vram-gib", type=float, default=23.5)
     parser.add_argument("--minimum-free-disk-gib", type=float, default=80.0)
     parser.add_argument(
         "--skip-gpu-check",

@@ -106,9 +106,17 @@ verifiers:
     selection_status: "candidate_pending_4090d_smoke_profile"
   prompt_path: "experiments/prompts/verifier-v1.txt"
   prompt_sha256: "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21"
+  policy_path: "experiments/prompts/policy-v1.txt"
+  policy_sha256: "1772EE5994EAA7B81E23585A905D7D400EE01884FE1503CDB48B8599A5B09DAE"
+  policy_payload_status: "drafted_pending_owner_signoff"
   profiling_input_contract: "docs/g2-profiling-input-contract.md"
-  policy_payload_status: "owner_decision_required_before_valid_profiling"
-  source_to_prompt_materializer_status: "not_implemented_do_not_use_ad_hoc_renderer"
+  source_to_prompt_materializer_status: "drafted_pending_owner_signoff"
+  materializer_package: "src/materializers"
+  materializer_sources:
+    tau2_bench: "src/materializers/tau_bench.py"
+    safetoolbench: "src/materializers/safetoolbench.py"
+    agentdojo: "src/materializers/agentdojo.py"
+  materialization_script: "scripts/materialize_g2_prompts.py"
   decoding:
     enable_thinking: false
     do_sample: false
