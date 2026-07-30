@@ -1,0 +1,99 @@
+{
+  "schema_version": "0.1",
+  "purpose": "G2 cloud preflight only; no model is loaded and no experiment is run.",
+  "generated_at_utc": "2026-07-30T09:13:27.148626+00:00",
+  "host": {
+    "platform": "Linux-5.15.0-105-generic-x86_64-with-glibc2.35",
+    "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]"
+  },
+  "gpu": {
+    "error": "Command '['nvidia-smi', '--id=0', '--query-gpu=name,memory.total,driver_version', '--format=csv,noheader,nounits']' returned non-zero exit status 6.",
+    "command": [
+      "nvidia-smi",
+      "--id=0",
+      "--query-gpu=name,memory.total,driver_version",
+      "--format=csv,noheader,nounits"
+    ]
+  },
+  "torch": {
+    "torch_version": "2.5.1+cu124",
+    "torch_cuda_version": "12.4",
+    "cuda_available": false
+  },
+  "checks": {
+    "sha256:data/raw/tau2-bench-v1.0.1.zip": {
+      "passed": true,
+      "detail": {
+        "expected": "6E4C2E706A82C78EB2846A1E8B5DB6C92B38A3C664EB12FB9FEFE4DBC044E0AE",
+        "actual": "6E4C2E706A82C78EB2846A1E8B5DB6C92B38A3C664EB12FB9FEFE4DBC044E0AE"
+      }
+    },
+    "sha256:data/raw/agentdojo-v0.1.35.zip": {
+      "passed": true,
+      "detail": {
+        "expected": "78DA8287D3F496608BBF1C7EAF48A7E4294493AC907CE96DCFB35763B7114D58",
+        "actual": "78DA8287D3F496608BBF1C7EAF48A7E4294493AC907CE96DCFB35763B7114D58"
+      }
+    },
+    "sha256:data/raw/safetoolbench-ffdef6e782b0b05f579316003f3b084b549f1366.zip": {
+      "passed": true,
+      "detail": {
+        "expected": "0F0BA04880DA6C5DE3C36FE7590D5C17976C54E984E020A2A9C15FC1FB696444",
+        "actual": "0F0BA04880DA6C5DE3C36FE7590D5C17976C54E984E020A2A9C15FC1FB696444"
+      }
+    },
+    "sha256:experiments/prompts/verifier-v1.txt": {
+      "passed": true,
+      "detail": {
+        "expected": "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21",
+        "actual": "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21"
+      }
+    },
+    "sha256:experiments/prompts/policy-v1.txt": {
+      "passed": true,
+      "detail": {
+        "expected": "1772EE5994EAA7B81E23585A905D7D400EE01884FE1503CDB48B8599A5B09DAE",
+        "actual": "1772EE5994EAA7B81E23585A905D7D400EE01884FE1503CDB48B8599A5B09DAE"
+      }
+    },
+    "event_manifest_sha256": {
+      "passed": true,
+      "detail": {
+        "expected": "8afed1ffe3dcd20e930bd914d74329352308c426aacb99d0ef50ba0879cad3fb",
+        "actual": "8afed1ffe3dcd20e930bd914d74329352308c426aacb99d0ef50ba0879cad3fb"
+      }
+    },
+    "confirmed_risk_and_timeout_policy": {
+      "passed": true,
+      "detail": "epsilon=0.02 and the confirmed timeout formula must remain frozen"
+    },
+    "free_disk": {
+      "passed": true,
+      "detail": {
+        "free_gib": 80.74,
+        "required_gib": 80.0
+      }
+    },
+    "nvidia_smi": {
+      "passed": false,
+      "detail": {
+        "error": "Command '['nvidia-smi', '--id=0', '--query-gpu=name,memory.total,driver_version', '--format=csv,noheader,nounits']' returned non-zero exit status 6.",
+        "command": [
+          "nvidia-smi",
+          "--id=0",
+          "--query-gpu=name,memory.total,driver_version",
+          "--format=csv,noheader,nounits"
+        ]
+      }
+    },
+    "torch_cuda_bf16": {
+      "passed": false,
+      "detail": {
+        "torch_version": "2.5.1+cu124",
+        "torch_cuda_version": "12.4",
+        "cuda_available": false
+      }
+    }
+  },
+  "passed": false
+}

@@ -1,0 +1,42 @@
+{
+  "tier": "strong",
+  "model_id": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "dtype": "bfloat16",
+  "timestamp_utc": "2026-07-30T08:51:06Z",
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090 D",
+    "memory_total_mb": 24210,
+    "cuda_version": "12.4",
+    "torch_version": "2.5.1+cu124",
+    "driver_version": ""
+  },
+  "policy_sha256": "1772ee5994eaa7b81e23585a905d7d400ee01884fe1503cdb48b8599a5b09dae",
+  "template_sha256": "BA19ABD9776361BDAC5922D374EDFAA51771374F4C1F8C9BB5B1E674BE8E0F21",
+  "load": {
+    "time_s": 14.83,
+    "peak_vram_mb": 15622.61
+  },
+  "profiling": {
+    "warmup_count": 10,
+    "inputs": 129,
+    "repetitions": 3,
+    "total_expected": 387,
+    "total_ok": 387,
+    "oom_count": 0,
+    "parse_failures": 0,
+    "completion_rate": 1.0
+  },
+  "latency": {
+    "wall_p50_ms": 148.38,
+    "wall_p95_ms": 166.74,
+    "wall_p99_ms": 176.97,
+    "cuda_p50_ms": 148.34,
+    "cuda_p95_ms": 166.7,
+    "cuda_p99_ms": 176.93,
+    "n_samples": 387
+  },
+  "errors": [],
+  "error_count": 0,
+  "passed": true
+}

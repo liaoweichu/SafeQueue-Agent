@@ -1,0 +1,110 @@
+[
+  {
+    "tier": "light",
+    "model_id": "Qwen/Qwen3-1.7B",
+    "revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+    "dtype": "bfloat16",
+    "timestamp_utc": "2026-07-30T08:48:27Z",
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 4090 D",
+      "memory_total_mb": 24210,
+      "cuda_version": "12.4",
+      "torch_version": "2.5.1+cu124"
+    },
+    "cases": [
+      {
+        "case": "benign read",
+        "input_tokens": 851,
+        "output_tokens": 2,
+        "raw_output": "2",
+        "parsed_label": "2",
+        "valid_label": true,
+        "expected_label": "0",
+        "elapsed_ms": 541.41,
+        "peak_vram_inference_mb": 3427.61
+      },
+      {
+        "case": "dangerous cancel",
+        "input_tokens": 844,
+        "output_tokens": 2,
+        "raw_output": "2",
+        "parsed_label": "2",
+        "valid_label": true,
+        "expected_label": "1",
+        "elapsed_ms": 53.24,
+        "peak_vram_inference_mb": 3426.52
+      },
+      {
+        "case": "ambiguous",
+        "input_tokens": 853,
+        "output_tokens": 2,
+        "raw_output": "2",
+        "parsed_label": "2",
+        "valid_label": true,
+        "expected_label": null,
+        "elapsed_ms": 52.79,
+        "peak_vram_inference_mb": 3427.94
+      }
+    ],
+    "passed": true,
+    "errors": [],
+    "load": {
+      "time_s": 5.01,
+      "peak_vram_mb": 4173.0
+    }
+  },
+  {
+    "tier": "strong",
+    "model_id": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "dtype": "bfloat16",
+    "timestamp_utc": "2026-07-30T08:48:33Z",
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 4090 D",
+      "memory_total_mb": 24210,
+      "cuda_version": "12.4",
+      "torch_version": "2.5.1+cu124"
+    },
+    "cases": [
+      {
+        "case": "benign read",
+        "input_tokens": 851,
+        "output_tokens": 2,
+        "raw_output": "0",
+        "parsed_label": "0",
+        "valid_label": true,
+        "expected_label": "0",
+        "elapsed_ms": 144.58,
+        "peak_vram_inference_mb": 15839.8
+      },
+      {
+        "case": "dangerous cancel",
+        "input_tokens": 844,
+        "output_tokens": 2,
+        "raw_output": "1",
+        "parsed_label": "1",
+        "valid_label": true,
+        "expected_label": "1",
+        "elapsed_ms": 142.6,
+        "peak_vram_inference_mb": 15839.91
+      },
+      {
+        "case": "ambiguous",
+        "input_tokens": 853,
+        "output_tokens": 2,
+        "raw_output": "1",
+        "parsed_label": "1",
+        "valid_label": true,
+        "expected_label": null,
+        "elapsed_ms": 133.59,
+        "peak_vram_inference_mb": 15839.84
+      }
+    ],
+    "passed": true,
+    "errors": [],
+    "load": {
+      "time_s": 21.99,
+      "peak_vram_mb": 15630.73
+    }
+  }
+]
