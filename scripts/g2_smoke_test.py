@@ -122,11 +122,6 @@ def run_smoke_test(tier: str) -> dict:
         "revision": spec["revision"],
         "dtype": "bfloat16",
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "decoding_constraint": {
-            "version": "single_token_label_logits_mask_v1",
-            "allowed_tokens": ["0", "1", "2"],
-            "enforced_by": "label_validation_post_decode",
-        },
         "gpu": {},
         "code": {
             "git_revision": git_revision(),

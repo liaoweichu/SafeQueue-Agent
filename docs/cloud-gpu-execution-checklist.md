@@ -75,6 +75,7 @@ python scripts/g2_profiling_runner.py \
 python scripts/audit_g2_profiling_artifacts.py \
   --selection data/processed/g2-profiling-selection.v3.json \
   --preflight artifact/cloud-gpu/preflight.v3.json \
+  --smoke artifact/cloud-gpu/smoke-test-results.v3.json \
   --light artifact/cloud-gpu/profiling-light.v3.jsonl \
   --strong artifact/cloud-gpu/profiling-strong.v3.jsonl \
   --output artifact/cloud-gpu/g2-v3-audit.json
