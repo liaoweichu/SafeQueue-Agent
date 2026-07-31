@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "tier": "strong",
+  "output": "artifact/cloud-gpu/g3r1-scores-strong.jsonl",
+  "rows": 1000,
+  "elapsed_seconds": 129.74,
+  "gpu": "NVIDIA GeForce RTX 4090 D",
+  "torch_version": "2.5.1+cu124",
+  "transformers_version": "5.14.1",
+  "model": {
+    "model_id": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+  },
+  "event_manifest_sha256": "f41d79aeecbdd2c38bcb561b6ed239a60a4b541e929df849efcd99a7e3b991ae",
+  "service_profile_selection_sha256": "f8b51229522133f173cbd8653d2b3bbdb9bcb33ff93e111a6d7542d121da09f6",
+  "code_git_revision": "acaa483d6700c5f5d6526a2855f0e5d2c63540f9"
+}

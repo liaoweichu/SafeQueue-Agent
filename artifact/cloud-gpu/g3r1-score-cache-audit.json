@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3r1-score-cache",
+  "status": "passed",
+  "scope": {
+    "total_per_tier": 1000,
+    "tau2_evaluation": 500,
+    "tau2_calibration": 50,
+    "safetoolbench_evaluation": 300,
+    "safetoolbench_calibration": 150
+  },
+  "files": {
+    "artifact/cloud-gpu/g3r1-scores-light.jsonl": "11c4aecf3e48f5fb1c3ef3db72776e6f144deaae57d6763975a02ddd693a2964",
+    "artifact/cloud-gpu/g3r1-scores-strong.jsonl": "c525da90b6b9fefd6421646972926e678305aa27f2c1f9f6575c35a25b6c23ae"
+  },
+  "checks": {
+    "light_cache_rows": 1000,
+    "strong_cache_rows": 1000,
+    "manifest_readiness_errors": [],
+    "light_validation_errors": [],
+    "strong_validation_errors": [],
+    "provenance_errors": [],
+    "cross_tier_errors": []
+  },
+  "semantics": {
+    "cache_scope": "1,000 signed materialized tau2/SafeToolBench inputs per tier",
+    "routing_oracle": "forbidden; cache contains model outputs/provenance only",
+    "dangerous_holdout": "owner-signed SafeToolBench evaluation rows with conservative Strong-only hard envelope"
+  }
+}

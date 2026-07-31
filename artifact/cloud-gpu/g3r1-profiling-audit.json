@@ -1,0 +1,282 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3r1-profiling",
+  "status": "passed",
+  "selection_sha256": "f8b51229522133f173cbd8653d2b3bbdb9bcb33ff93e111a6d7542d121da09f6",
+  "files": {
+    "data/processed/g3r1-profiling-selection.v1.json": "25fef9611608e499d5f6b2f50e9db75438d48809395be4918212bc39362aef57",
+    "artifact/cloud-gpu/profiling-light.g3r1.jsonl": "a41c52f84dbbcab9c0fd0662d73ba81b6deb3a9c74bec2806e674bdcc814bad9",
+    "artifact/cloud-gpu/profiling-strong.g3r1.jsonl": "6c3d133bd94831217d476dafd79bcfa70530ff7c82fa54e1366b52caf8f7eafd",
+    "artifact/cloud-gpu/profiling-light.g3r1.summary.json": "fa97f73e18644674ab3b2431e64637d4ec0883458e4365b25f31e00e9c83bb0c",
+    "artifact/cloud-gpu/profiling-strong.g3r1.summary.json": "e43d25b5fd5fba910d58d0e39694f8eb971eaf4e8216258bd79f90f9e01b1431"
+  },
+  "checks": [
+    {
+      "name": "selection_contract",
+      "passed": true,
+      "detail": "g3r1-profiling-v1"
+    },
+    {
+      "name": "selection_event_manifest_provenance",
+      "passed": true,
+      "detail": "f41d79aeecbdd2c38bcb561b6ed239a60a4b541e929df849efcd99a7e3b991ae"
+    },
+    {
+      "name": "selection_exact_unique_128",
+      "passed": true,
+      "detail": {
+        "records": 128,
+        "unique": 128
+      }
+    },
+    {
+      "name": "selection_hash",
+      "passed": true,
+      "detail": "f8b51229522133f173cbd8653d2b3bbdb9bcb33ff93e111a6d7542d121da09f6"
+    },
+    {
+      "name": "selection_length_quotas",
+      "passed": true,
+      "detail": {
+        "actual": {
+          "medium": 43,
+          "long": 42,
+          "short": 43
+        },
+        "target": {
+          "short": 43,
+          "medium": 43,
+          "long": 42
+        }
+      }
+    },
+    {
+      "name": "selection_source_quotas",
+      "passed": true,
+      "detail": {
+        "actual": {
+          "tau2-bench": 80,
+          "safetoolbench": 48
+        },
+        "stratification": {
+          "length_quotas": {
+            "short": 43,
+            "medium": 43,
+            "long": 42
+          },
+          "tau2_evaluation_quota": 80,
+          "safetoolbench_dangerous_evaluation_quota": 48,
+          "tau_hard_minimum": 24,
+          "actual_length_counts": {
+            "short": 43,
+            "medium": 43,
+            "long": 42
+          },
+          "actual_source_counts": {
+            "tau2-bench": 80,
+            "safetoolbench": 48
+          },
+          "actual_tau_hard_count": 35,
+          "safetoolbench_allocation_by_length": {
+            "short": 24,
+            "medium": 23,
+            "long": 1
+          },
+          "tau_hard_allocation_by_length": {
+            "short": 0,
+            "medium": 8,
+            "long": 16
+          },
+          "length_measurement": "full Qwen non-thinking chat prompt tokens",
+          "selection_basis": "source, evaluation split, structural hard_required, full prompt length, fixed seed; never benchmark labels or model outputs"
+        }
+      }
+    },
+    {
+      "name": "selection_tau_hard_minimum",
+      "passed": true,
+      "detail": {
+        "actual": 35,
+        "minimum": 24
+      }
+    },
+    {
+      "name": "selection_evaluation_only",
+      "passed": true,
+      "detail": "calibration inputs are excluded from the R1 service profile"
+    },
+    {
+      "name": "selection_unique_prompts",
+      "passed": true,
+      "detail": "prompt hashes"
+    },
+    {
+      "name": "light_raw_cardinality",
+      "passed": true,
+      "detail": {
+        "rows": 384,
+        "unique_events": 128,
+        "repetition_counts": {
+          "3": 128
+        }
+      }
+    },
+    {
+      "name": "light_constrained_output",
+      "passed": true,
+      "detail": {
+        "ok": 384,
+        "status_counts": {
+          "ok": 384
+        }
+      }
+    },
+    {
+      "name": "light_probability_semantics",
+      "passed": true,
+      "detail": "risk=P(BLOCK)+P(ABSTAIN)"
+    },
+    {
+      "name": "light_selected_prompt_metadata",
+      "passed": true,
+      "detail": "raw metadata must match signed selection"
+    },
+    {
+      "name": "light_length_coverage",
+      "passed": true,
+      "detail": {
+        "actual": {
+          "long": 126,
+          "medium": 129,
+          "short": 129
+        },
+        "expected": {
+          "short": 129,
+          "medium": 129,
+          "long": 126
+        }
+      }
+    },
+    {
+      "name": "light_summary_gate",
+      "passed": true,
+      "detail": {
+        "profiling": {
+          "warmup_count": 10,
+          "inputs": 128,
+          "repetitions": 3,
+          "total_expected": 384,
+          "total_ok": 384,
+          "oom_count": 0,
+          "constraint_error_count": 0,
+          "runtime_error_count": 0,
+          "completion_rate": 1.0,
+          "gpu_interference_count": 0,
+          "gpu_interference_rate": 0.0
+        },
+        "length_counts": {
+          "short": 129,
+          "medium": 129,
+          "long": 126
+        }
+      }
+    },
+    {
+      "name": "light_provenance",
+      "passed": true,
+      "detail": {
+        "name": "NVIDIA GeForce RTX 4090 D",
+        "memory_total_mb": 24210,
+        "cuda_version": "12.4",
+        "torch_version": "2.5.1+cu124",
+        "transformers_version": "5.14.1",
+        "driver_version": "550.120",
+        "tokenizer_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+      }
+    },
+    {
+      "name": "strong_raw_cardinality",
+      "passed": true,
+      "detail": {
+        "rows": 384,
+        "unique_events": 128,
+        "repetition_counts": {
+          "3": 128
+        }
+      }
+    },
+    {
+      "name": "strong_constrained_output",
+      "passed": true,
+      "detail": {
+        "ok": 384,
+        "status_counts": {
+          "ok": 384
+        }
+      }
+    },
+    {
+      "name": "strong_probability_semantics",
+      "passed": true,
+      "detail": "risk=P(BLOCK)+P(ABSTAIN)"
+    },
+    {
+      "name": "strong_selected_prompt_metadata",
+      "passed": true,
+      "detail": "raw metadata must match signed selection"
+    },
+    {
+      "name": "strong_length_coverage",
+      "passed": true,
+      "detail": {
+        "actual": {
+          "long": 126,
+          "medium": 129,
+          "short": 129
+        },
+        "expected": {
+          "short": 129,
+          "medium": 129,
+          "long": 126
+        }
+      }
+    },
+    {
+      "name": "strong_summary_gate",
+      "passed": true,
+      "detail": {
+        "profiling": {
+          "warmup_count": 10,
+          "inputs": 128,
+          "repetitions": 3,
+          "total_expected": 384,
+          "total_ok": 384,
+          "oom_count": 0,
+          "constraint_error_count": 0,
+          "runtime_error_count": 0,
+          "completion_rate": 1.0,
+          "gpu_interference_count": 0,
+          "gpu_interference_rate": 0.0
+        },
+        "length_counts": {
+          "short": 129,
+          "medium": 129,
+          "long": 126
+        }
+      }
+    },
+    {
+      "name": "strong_provenance",
+      "passed": true,
+      "detail": {
+        "name": "NVIDIA GeForce RTX 4090 D",
+        "memory_total_mb": 24210,
+        "cuda_version": "12.4",
+        "torch_version": "2.5.1+cu124",
+        "transformers_version": "5.14.1",
+        "driver_version": "550.120",
+        "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218"
+      }
+    }
+  ]
+}

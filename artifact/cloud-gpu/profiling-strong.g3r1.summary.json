@@ -1,0 +1,130 @@
+{
+  "tier": "strong",
+  "model_id": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "dtype": "bfloat16",
+  "timestamp_utc": "2026-07-31T04:49:00Z",
+  "selection_contract_version": "g3r1-profiling-v1",
+  "selection_sha256": "f8b51229522133f173cbd8653d2b3bbdb9bcb33ff93e111a6d7542d121da09f6",
+  "code": {
+    "git_revision": "acaa483d6700c5f5d6526a2855f0e5d2c63540f9",
+    "runner_sha256": "13f511dc8e99ae2bea434581e3b6ffe87acb29769c7cb1e2aa0faf04c5452a67"
+  },
+  "stratification": {
+    "length_quotas": {
+      "short": 43,
+      "medium": 43,
+      "long": 42
+    },
+    "tau2_evaluation_quota": 80,
+    "safetoolbench_dangerous_evaluation_quota": 48,
+    "tau_hard_minimum": 24,
+    "actual_length_counts": {
+      "short": 43,
+      "medium": 43,
+      "long": 42
+    },
+    "actual_source_counts": {
+      "tau2-bench": 80,
+      "safetoolbench": 48
+    },
+    "actual_tau_hard_count": 35,
+    "safetoolbench_allocation_by_length": {
+      "short": 24,
+      "medium": 23,
+      "long": 1
+    },
+    "tau_hard_allocation_by_length": {
+      "short": 0,
+      "medium": 8,
+      "long": 16
+    },
+    "length_measurement": "full Qwen non-thinking chat prompt tokens",
+    "selection_basis": "source, evaluation split, structural hard_required, full prompt length, fixed seed; never benchmark labels or model outputs"
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090 D",
+    "memory_total_mb": 24210,
+    "cuda_version": "12.4",
+    "torch_version": "2.5.1+cu124",
+    "transformers_version": "5.14.1",
+    "driver_version": "550.120",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218"
+  },
+  "policy_sha256": "1772ee5994eaa7b81e23585a905d7d400ee01884fe1503cdb48b8599a5b09dae",
+  "template_sha256": "ba19abd9776361bdac5922d374edfaa51771374f4c1f8c9bb5b1e674be8e0f21",
+  "decoding_constraint": {
+    "version": "single_token_label_logits_mask_v1",
+    "allowed_labels": [
+      "0",
+      "1",
+      "2"
+    ],
+    "label_token_ids": {
+      "0": 15,
+      "1": 16,
+      "2": 17
+    },
+    "max_new_tokens": 1,
+    "probability_semantics": "softmax over first-step logits restricted to labels 0/1/2",
+    "sha256": "dfc6f2e34fdde9a340e27c6eccd933fe956113dac13a108aa26d7482effcd330"
+  },
+  "load": {
+    "time_s": 6.97,
+    "peak_vram_mb": 15622.61
+  },
+  "profiling": {
+    "warmup_count": 10,
+    "inputs": 128,
+    "repetitions": 3,
+    "total_expected": 384,
+    "total_ok": 384,
+    "oom_count": 0,
+    "constraint_error_count": 0,
+    "runtime_error_count": 0,
+    "completion_rate": 1.0,
+    "gpu_interference_count": 0,
+    "gpu_interference_rate": 0.0
+  },
+  "latency": {
+    "wall_p50_ms": 120.45,
+    "wall_p95_ms": 136.41,
+    "wall_p99_ms": 139.1,
+    "cuda_p50_ms": 120.41,
+    "cuda_p95_ms": 136.37,
+    "cuda_p99_ms": 139.06,
+    "n_samples": 384
+  },
+  "latency_by_input_length_tercile": {
+    "short": {
+      "wall_p50_ms": 115.24,
+      "wall_p95_ms": 116.63,
+      "wall_p99_ms": 116.86,
+      "cuda_p50_ms": 115.2,
+      "cuda_p95_ms": 116.59,
+      "cuda_p99_ms": 116.81,
+      "n_samples": 129
+    },
+    "medium": {
+      "wall_p50_ms": 120.68,
+      "wall_p95_ms": 122.02,
+      "wall_p99_ms": 122.32,
+      "cuda_p50_ms": 120.64,
+      "cuda_p95_ms": 121.98,
+      "cuda_p99_ms": 122.27,
+      "n_samples": 129
+    },
+    "long": {
+      "wall_p50_ms": 129.35,
+      "wall_p95_ms": 138.64,
+      "wall_p99_ms": 143.27,
+      "cuda_p50_ms": 129.31,
+      "cuda_p95_ms": 138.59,
+      "cuda_p99_ms": 143.23,
+      "n_samples": 126
+    }
+  },
+  "errors": [],
+  "error_count": 0,
+  "passed": true
+}
