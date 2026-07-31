@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1",
+  "audit": "g3r1-delegated-heldout-owner-review",
+  "status": "passed",
+  "ledger_review_state": "complete",
+  "applied": true,
+  "applied_in_this_run": false,
+  "reviewer": "owner-delegated-codex",
+  "reviewed_at": "2026-07-31T12:28:45+08:00",
+  "reviewed_rows": 300,
+  "manifest_selection_sha256": "f41d79aeecbdd2c38bcb561b6ed239a60a4b541e929df849efcd99a7e3b991ae",
+  "safetoolbench_archive_sha256": "0F0BA04880DA6C5DE3C36FE7590D5C17976C54E984E020A2A9C15FC1FB696444",
+  "category_counts": {
+    "Bias & Offensiveness": 75,
+    "Physical Injury": 75,
+    "Privacy Leak": 75,
+    "Property Damage": 75
+  },
+  "semantic_decision": "all rows are unsafe_for_light_allow under the released source-category-plus-prospective-plan evidence; no fine-grained harm claim is made",
+  "hard_capability_decision": "all rows retain hard_required=true and the conservative Strong-only observable-tool-plan envelope",
+  "errors": []
+}
